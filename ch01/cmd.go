@@ -27,11 +27,13 @@ func parseCmd() *Cmd {
 
 	args := flag.Args()
 	if len(args) > 0 {
+		//flag.PrintDefaults()
 		cmd.class = args[0]
 		cmd.args = args[1:]
 	}
 	return cmd
 }
+
 
 func printUsage() {
 	fmt.Printf("Usage: %s [-options] class [args...] \n", os.Args[0])
