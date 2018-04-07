@@ -37,8 +37,20 @@ func Parse(classData []byte)(cf *ClassFile,err error) {
 }
 
 func (cf *ClassFile) read(reader *ClassReader) {
+	//read magic
 	cf.readAndCheckMagic(reader)
+	//read version
 	cf.readAndCheckVersion(reader)
+	//read pool
+	cf.constantPool = readConstantPool(reader)
+	cf.accessFlags = reader.readUint16()
+	cf.thisClass = reader.readUint16()
+	cf.superClass = reader.readUint16()
+	cf.interfaces = reader.readUint16s()
+	//cf.fields = readMembers(reader, cf.constantPool)
+	//cf.methods = readMembers(reader,cf.constantPool)
+	//cf.attributes = readAttributes(reader,cf.constantPool)
+
 }
 
 func (cf *ClassFile) MajorVersion() uint16{

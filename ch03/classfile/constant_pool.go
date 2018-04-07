@@ -2,3 +2,28 @@ package classfile
 
 type ConstantPool []ConstantInfo
 
+func (cp ConstantPool) getUtf8(index uint16) string {
+	utf8Info := cp.getConstantInfo(index).(*ConstantUtf8Info)
+	return utf8Info.str
+}
+func (cp ConstantPool) getConstantInfo(index uint16) ConstantInfo{
+	if cpInfo := cp[index];cpInfo != nil {
+		return cpInfo
+	}
+	panic("Invalid constant pool index!")
+}
+
+
+func readConstantPool(reader *ClassReader) ConstantPool {
+	cpCount := int(reader.readUint16())
+	cp := make([]ConstantInfo,cpCount)
+	for i:=1; i<cpCount;i++{
+		cp [i] = readConstantInfo(reader,cp)
+		//switch cp[i].(type) {
+		//case *ConstantLongInfo ,*ConstantDoubleInfo:
+		//	i++t
+		//}
+	}
+	return cp
+}
+

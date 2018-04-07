@@ -47,7 +47,7 @@ func (cr *ClassReader) readUint16s() []uint16{
 
 
 func (cr *ClassReader) readBytes(n uint32) []byte{
-	bytes := cr.data[:n]
-	cr.data = cr.data[:n]
+	bytes := cr.data[n:]
+	cr.data = cr.data[n:]
 	return bytes
 }
