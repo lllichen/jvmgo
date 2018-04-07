@@ -5,8 +5,6 @@ import (
 	"io/ioutil"
 	"errors"
 	"path/filepath"
-	"fmt"
-	"strings"
 )
 
 type ZipEntry struct {
@@ -24,18 +22,18 @@ func newZipEntry(path string) *ZipEntry{
 
 func (ze *ZipEntry) readClass(className string) ([]byte,Entry,error){
 	//fmt.Println(ze.String())
-	if strings.Contains(ze.String(),"rt.jar") {
-		fmt.Printf(ze.String())
-	}
+	//if strings.Contains(ze.String(),"rt.jar") {
+	//	fmt.Printf(ze.String())
+	//}
 	r,err := zip.OpenReader(ze.absPath)
 	if err != nil{
 		return nil,nil,err
 	}
 	defer r.Close()
 	for _,f:=range r.File {
-		if strings.Contains(f.Name,"Object") &&strings.Contains(f.Name,"lang") {
-			fmt.Println(f.Name)
-		}
+		//if strings.Contains(f.Name,"Object") &&strings.Contains(f.Name,"lang") {
+		//	fmt.Println(f.Name)
+		//}
 		if f.Name == className {
 			rc,err := f.Open()
 			if err != nil{

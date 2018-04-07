@@ -31,15 +31,16 @@ func startJVM(cmd *Cmd) {
 		fmt.Printf("Could not find or load main class %s\n", cmd.class)
 		return
 	}
+	//print data
+	fmt.Printf("class data:%v\n", classData)
 
 	cf, err := classfile.Parse(classData)
 	if err != nil {
 		fmt.Printf("Could not parse main class %s\n",cmd.class)
+		fmt.Println(err)
+		return
 	}
-	fmt.Println(cf)
+	fmt.Println(cf.MajorVersion())
 
-	 //classfile,err := Parse(classData)
 
-	 //print data
-	//fmt.Printf("class data:%v\n", classData)
 }

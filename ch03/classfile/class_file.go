@@ -19,10 +19,12 @@ type ClassFile struct {
 
 
 func Parse(classData []byte)(cf *ClassFile,err error) {
+	//interface assertion
 	defer func(){
 		if r := recover(); r != nil {
 			var ok bool
 			err, ok = r.(error)
+			// check err ,not err ,format to err
 			if !ok {
 				err = fmt.Errorf("%v",r)
 			}
@@ -51,6 +53,8 @@ func (cf *ClassFile) readAndCheckMagic(reader *ClassReader) {
 func (cf *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	cf.minorVersion = reader.readUint16()
 	cf.majorVersion = reader.readUint16()
+	fmt.Printf("minorVersion is %d\n",cf.minorVersion)
+	fmt.Printf("majorVersion is %d\n",cf.majorVersion)
 	switch cf.majorVersion {
 	case 45:
 		return
