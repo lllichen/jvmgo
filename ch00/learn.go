@@ -4,18 +4,20 @@ import "fmt"
 
 func main(){
 
-	//11001010
-	var t byte= 202
-	fmt.Printf("%v\n",t)
-	fmt.Printf("%b\n",t)
-	fmt.Printf("%d\n",t)
-	fmt.Printf("%x\n",t)
-	fmt.Printf("%d\n",t)
-	fmt.Printf("%d\n",t)
+	c := [4]byte{0xCA,0xFE,0xBA,0xBE}
 
-
-	if t == 0Xca{
-		fmt.Printf("ok")
+	for _,v := range c {
+		fmt.Printf("%b\t",v)
 	}
-	fmt.Println("hello")
+	fmt.Println(c)
+
+	d := [8]byte{0xC,0xA,0xF,0xE,0xB,0xA,0xB,0xE}
+	for _,v := range d {
+		fmt.Printf("%b\t",v)
+	}
+	
+
+	z := 0XCAFEBABE
+	fmt.Printf("%b",z)
+
 }

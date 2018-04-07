@@ -28,5 +28,5 @@ func startJVM(cmd *Cmd) {
 		return
 	}
 
-	fmt.Printf("class data:%v\n", classData)
+	fmt.Printf("class data:%d\n", classData)
 }
