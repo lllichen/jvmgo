@@ -39,10 +39,6 @@ func (cf *ClassFile) read(reader *ClassReader) {
 	cf.readAndCheckVersion(reader)
 }
 
-func readAndCheckMagic(reader *ClassReader){
-
-}
-
 func (cf *ClassFile) MajorVersion() uint16{
 	return cf.majorVersion
 }

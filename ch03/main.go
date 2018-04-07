@@ -2,7 +2,11 @@ package main
 
 import "fmt"
 import "strings"
-import "jvmgo/ch03/classpath"
+import (
+	"jvmgo/ch03/classpath"
+	"jvmgo/ch03/classfile"
+)
+//import "jvmgo/ch03/classfile"
 
 func main() {
 	cmd := parseCmd()
@@ -28,5 +32,14 @@ func startJVM(cmd *Cmd) {
 		return
 	}
 
-	fmt.Printf("class data:%v\n", classData)
+	cf, err := classfile.Parse(classData)
+	if err != nil {
+		fmt.Printf("Could not parse main class %s\n",cmd.class)
+	}
+	fmt.Println(cf)
+
+	 //classfile,err := Parse(classData)
+
+	 //print data
+	//fmt.Printf("class data:%v\n", classData)
 }
