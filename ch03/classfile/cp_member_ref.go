@@ -16,7 +16,21 @@ func (cmi *ConstantMemberRefInfo) ClassName() string {
 }
 
 
-func (cmi *ConstantMemberRefInfo) NameAndDescritor() (string ,string) {
+func (cmi *ConstantMemberRefInfo) NameAndDescriptor() (string ,string) {
 	return cmi.cp.getNameAndType(cmi.nameAndTypeIndex)
 }
 
+type ConstantFieldRefInfo struct {
+	ConstantMemberRefInfo
+}
+
+
+
+type ConstantMethodRefInfo struct {
+	ConstantMemberRefInfo
+}
+
+
+type ConstantInterfaceRefInfo struct {
+	ConstantMemberRefInfo
+}
