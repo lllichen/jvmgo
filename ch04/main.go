@@ -2,8 +2,11 @@ package main
 
 import "fmt"
 import "strings"
-import "jvmgo/ch03/classfile"
-import "jvmgo/ch04/classpath"
+import (
+	"jvmgo/ch04/classpath"
+	"jvmgo/ch04/classfile"
+)
+//import "jvmgo/ch04/classfile"
 
 func main() {
 	cmd := parseCmd()
@@ -19,26 +22,27 @@ func main() {
 
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
-	className := strings.Replace(cmd.class, ".", "/", -1)
-	cf := loadClass(className, cp)
-	fmt.Println(cmd.class)
-	printClassInfo(cf)
-}
+	fmt.Printf("classpath:%v class:%v args:%v\n",
+		cp, cmd.class, cmd.args)
 
-func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
+	className := strings.Replace(cmd.class, ".", "/", -1)
 	classData, _, err := cp.ReadClass(className)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Could not find or load main class %s\n", cmd.class)
+		return
 	}
+	//print data
+	fmt.Printf("class data:%v\n", classData)
 
-	cf, err := classfile.Parse(classData)
-	if err != nil {
-		panic(err)
-	}
-
-	return cf
+	cf := loadClass(className,cp)
+	fmt.Println(cmd.class)
+	printClassInfo(cf)
+	//fmt.Println(cf.MajorVersion())
+	//fmt.Println(cf.AccessFlags())
+	//fmt.Println(cf.ThisClass())
+	//fmt.Println(cf.SuperClass())
+	//fmt.Println(cf.ConstantPool())
 }
-
 func printClassInfo(cf *classfile.ClassFile) {
 	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVersion())
 	fmt.Printf("constants count: %v\n", len(cf.ConstantPool()))
@@ -54,4 +58,17 @@ func printClassInfo(cf *classfile.ClassFile) {
 	for _, m := range cf.Methods() {
 		fmt.Printf("  %s\n", m.Name())
 	}
+}
+
+
+func loadClass(className string,cp *classpath.Classpath) *classfile.ClassFile{
+	classData,_,err := cp.ReadClass(className)
+	if err != nil {
+		panic(err)
+	}
+	cf, err := classfile.Parse(classData)
+	if err != nil {
+		panic(err)
+	}
+	return cf
 }

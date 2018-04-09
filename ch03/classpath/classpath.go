@@ -1,55 +1,48 @@
 package classpath
 
-import (
-	"os"
-	"path/filepath"
-)
+import "os"
+import "path/filepath"
 
 type Classpath struct {
 	bootClasspath Entry
-	extClasspath Entry
+	extClasspath  Entry
 	userClasspath Entry
 }
 
-
 func Parse(jreOption, cpOption string) *Classpath {
-	cp := & Classpath{}
+	cp := &Classpath{}
 	cp.parseBootAndExtClasspath(jreOption)
 	cp.parseUserClasspath(cpOption)
 	return cp
 }
 
-func (cp *Classpath) parseUserClasspath(cpOption string) {
-	if cpOption == "" {
-		cpOption = "."
-	}
-	cp.userClasspath = newEntry(cpOption)
-}
-
-func (cp *Classpath) parseBootAndExtClasspath(jreOption string){
+func (self *Classpath) parseBootAndExtClasspath(jreOption string) {
 	jreDir := getJreDir(jreOption)
-	jreLibPath := filepath.Join(jreDir, "lib" ,"*")
-	cp.bootClasspath = newWildcardEntry(jreLibPath)
 
-	jreExtPath := filepath.Join(jreDir, "lib", "ext","*")
-	cp.extClasspath = newWildcardEntry(jreExtPath)
+	// jre/lib/*
+	jreLibPath := filepath.Join(jreDir, "lib", "*")
+	self.bootClasspath = newWildcardEntry(jreLibPath)
+
+	// jre/lib/ext/*
+	jreExtPath := filepath.Join(jreDir, "lib", "ext", "*")
+	self.extClasspath = newWildcardEntry(jreExtPath)
 }
 
 func getJreDir(jreOption string) string {
-	if jreOption != "" && exists(jreOption){
+	if jreOption != "" && exists(jreOption) {
 		return jreOption
 	}
 	if exists("./jre") {
 		return "./jre"
 	}
-	if jh := os.Getenv("JAVA_HOMEE"); jh != "" {
-		return filepath.Join(jh,"jre")
+	if jh := os.Getenv("JAVA_HOME"); jh != "" {
+		return filepath.Join(jh, "jre")
 	}
 	panic("Can not find jre folder!")
 }
 
 func exists(path string) bool {
-	if _,err := os.Stat(path);err != nil {
+	if _, err := os.Stat(path); err != nil {
 		if os.IsNotExist(err) {
 			return false
 		}
@@ -57,17 +50,25 @@ func exists(path string) bool {
 	return true
 }
 
-func (cp *Classpath) ReadClass(className string)([]byte,Entry,error){
-	className = className + ".class"
-	if data, entry, err := cp.bootClasspath.readClass(className);err == nil {
-		return data,entry,err
+func (self *Classpath) parseUserClasspath(cpOption string) {
+	if cpOption == "" {
+		cpOption = "."
 	}
-	if data, entry, err := cp.extClasspath.readClass(className);err == nil {
-		return data,entry,err
-	}
-	return cp.userClasspath.readClass(className)
+	self.userClasspath = newEntry(cpOption)
 }
 
-func(cp *Classpath) String() string {
-	return cp.userClasspath.String()
+// className: fully/qualified/ClassName
+func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
+	className = className + ".class"
+	if data, entry, err := self.bootClasspath.readClass(className); err == nil {
+		return data, entry, err
+	}
+	if data, entry, err := self.extClasspath.readClass(className); err == nil {
+		return data, entry, err
+	}
+	return self.userClasspath.readClass(className)
+}
+
+func (self *Classpath) String() string {
+	return self.userClasspath.String()
 }
