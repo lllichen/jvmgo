@@ -37,5 +37,5 @@ func parseCmd() *Cmd {
 
 func printUsage() {
 	fmt.Printf("Usage: %s [-options] class [args...]\n", os.Args[0])
-	//flag.PrintDefaults()
+	flag.PrintDefaults()
 }

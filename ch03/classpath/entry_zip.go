@@ -1,73 +1,55 @@
 package classpath
 
-import "archive/zip"
-import "errors"
-import "io/ioutil"
-import "path/filepath"
+import (
+	"archive/zip"
+	"io/ioutil"
+	"errors"
+	"path/filepath"
+)
 
 type ZipEntry struct {
 	absPath string
-	zipRC   *zip.ReadCloser
 }
 
-func newZipEntry(path string) *ZipEntry {
-	absPath, err := filepath.Abs(path)
+func newZipEntry(path string) *ZipEntry{
+	absPath , err := filepath.Abs(path)
 	if err != nil {
 		panic(err)
 	}
-
-	return &ZipEntry{absPath, nil}
+	return &ZipEntry{absPath}
 }
 
-func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
-	if self.zipRC == nil {
-		err := self.openJar()
-		if err != nil {
-			return nil, nil, err
-		}
+
+func (ze *ZipEntry) readClass(className string) ([]byte,Entry,error){
+	//fmt.Println(ze.String())
+	//if strings.Contains(ze.String(),"rt.jar") {
+	//	fmt.Printf(ze.String())
+	//}
+	r,err := zip.OpenReader(ze.absPath)
+	if err != nil{
+		return nil,nil,err
 	}
-
-	classFile := self.findClass(className)
-	if classFile == nil {
-		return nil, nil, errors.New("class not found: " + className)
-	}
-
-	data, err := readClass(classFile)
-	return data, self, err
-}
-
-// todo: close zip
-func (self *ZipEntry) openJar() error {
-	r, err := zip.OpenReader(self.absPath)
-	if err == nil {
-		self.zipRC = r
-	}
-	return err
-}
-
-func (self *ZipEntry) findClass(className string) *zip.File {
-	for _, f := range self.zipRC.File {
+	defer r.Close()
+	for _,f:=range r.File {
+		//if strings.Contains(f.Name,"Object") &&strings.Contains(f.Name,"lang") {
+		//	fmt.Println(f.Name)
+		//}
 		if f.Name == className {
-			return f
+			rc,err := f.Open()
+			if err != nil{
+				return nil, nil, err
+			}
+			defer rc.Close()
+			data,err := ioutil.ReadAll(rc)
+			if err != nil {
+				return nil, nil, err
+			}
+			return data, ze ,nil
 		}
 	}
-	return nil
+return nil,nil,errors.New("class not found: "+ className)
 }
 
-func readClass(classFile *zip.File) ([]byte, error) {
-	rc, err := classFile.Open()
-	if err != nil {
-		return nil, err
-	}
-	// read class data
-	data, err := ioutil.ReadAll(rc)
-	rc.Close()
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func (self *ZipEntry) String() string {
-	return self.absPath
+func (ze *ZipEntry) String()string {
+	return ze.absPath
 }
