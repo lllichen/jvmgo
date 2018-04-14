@@ -40,7 +40,7 @@ func (localVars LocalVars) SetLong(index uint, val int64){
 func (localVars LocalVars) GetLong(index uint) int64 {
 	low := uint32( localVars[index].num)
 	high := uint32( localVars[index+1].num)
-	return int64(low | high)
+	return int64(high)<<32 | int64(low)
 }
 
 
@@ -51,9 +51,8 @@ func (localVars LocalVars) SetDouble(index uint, val float64){
 }
 
 func (localVars LocalVars) GetDouble(index uint) float64 {
-	low := uint32( localVars[index].num)
-	high := uint32( localVars[index+1].num)
-	return math.Float64frombits(uint64(low | high))
+	bits := uint64(localVars.GetLong(index))
+	return math.Float64frombits(bits)
 }
 
 
