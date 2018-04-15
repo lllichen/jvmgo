@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 import (
-	"jvmgo/ch04/rtda"
+	"jvmgo/ch05/rtda"
 )
 
 func main() {
