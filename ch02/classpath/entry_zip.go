@@ -25,7 +25,7 @@ func newZipEntry(path string) *ZipEntry{
 func (ze *ZipEntry) readClass(className string) ([]byte,Entry,error){
 	//fmt.Println(ze.String())
 	if strings.Contains(ze.String(),"rt.jar") {
-		fmt.Printf(ze.String())
+		fmt.Println(ze.String())
 	}
 	r,err := zip.OpenReader(ze.absPath)
 	if err != nil{
