@@ -24,3 +24,6 @@ func (thread *Thread) PopFrame( ) *Frame{
 func (thread *Thread) CurrentFrame( ) *Frame{
 	return thread.stack.top()
 }
+func (thread *Thread) PC() int {
+	return thread.pc
+}
