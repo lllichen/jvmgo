@@ -41,35 +41,18 @@ import "fmt"
 //}
 
 
-func A(m int, n []int) {
-	m = 100
-	n[3] = 99
-	fmt.Printf("After : &m=%p,&n=%p,n=%p\n", &m, &n, n)
-	fmt.Printf("         m=%d,n=%v\n", m, n)
-
+type Test struct {
+	val int
+	val1 int
 }
+
+func (test *Test) String() string {
+	fmt.Println(test.val+test.val1)
+	return "ok"
+}
+
 func main() {
-	m := 300
-	n := make([]int,100)
-	n = append(n, 1, 2, 3)
-
-	fmt.Printf("-----------origin--------------------\n")
-	fmt.Printf("Befter : &m=%p,&n=%p,n=%p\n", &m, &n, n)
-	fmt.Printf("          m=%d,n=%v\n", m, n)
-	fmt.Printf("-----------call A--------------------\n")
-
-	A(m, n)
-	//n = []int{1,2}
-	n = append(n,100)
-	fmt.Printf("------------end-------------------\n")
-	fmt.Printf("End : &m=%p,&n=%p,n=%p\n", &m, &n, n)
-	fmt.Printf("      m=%d,n=%v\n", m, n)
-
-
-	z := 100
-	p := &z
-	fmt.Printf("End : &z=%p,&p=%p\n", &z, p)
-	z = 200
-	fmt.Printf("End : &z=%p,&p=%p\n", &z, p)
-	fmt.Printf("End : &z=%p,&p=%v\n", &z, p)
+	t := &Test{1,2}
+	t.String()
 }
+

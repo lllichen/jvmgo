@@ -12,6 +12,12 @@ func (frame *Frame) LocalVars() LocalVars {
 func (frame *Frame) OperandStack() OperandStack {
 	return *frame.operandStack
 }
+func (frame *Frame) Thread() {
+	
+}
+func (frame *Frame) SetNextPC(nextPc interface{}) {
+	
+}
 
 func NewFrame(maxLocals, maxStack uint) *Frame{
 	return &Frame{localVars: newLocalVars(maxLocals),

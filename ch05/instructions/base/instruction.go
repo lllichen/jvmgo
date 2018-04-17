@@ -17,12 +17,12 @@ func (noi *NoOperandsInstruction) FetchOperands(reader *ByteCodeReader){
 
 
 type BranchInstruction struct {
-	offset int
+	Offset int
 }
 
 
 func (bi *BranchInstruction) FetchOperands(reader *ByteCodeReader){
-bi.offset = int(reader.ReadInt16())
+bi.Offset = int(reader.ReadInt16())
 }
 
 type Index8Instruction struct {
@@ -30,7 +30,7 @@ type Index8Instruction struct {
 }
 
 func (index8Instruction *Index8Instruction) FetchOperands(reader *ByteCodeReader){
-	index8Instruction.Index = uint(reader.readUint8())
+	index8Instruction.Index = uint(reader.ReadUint8())
 }
 
 type Index16Instruction struct {

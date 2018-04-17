@@ -15,6 +15,15 @@ func (mi *MemberInfo) Name() string  {
 func (mi *MemberInfo) Descriptor() string  {
 	return mi.cp.getUtf8(mi.descriptorIndex)
 }
+func (info *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attribute := range info.attributes{
+		switch attribute.(type) {
+		case *CodeAttribute:
+			return attribute.(*CodeAttribute)
+		}
+	}
+	return nil
+}
 
 
 func readMembers(reader *ClassReader,cp ConstantPool) []*MemberInfo {
