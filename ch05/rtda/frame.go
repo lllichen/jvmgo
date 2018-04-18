@@ -20,8 +20,13 @@ func (frame *Frame) Thread() *Thread {
 func (frame *Frame) SetNextPC(nextPc int) {
 	frame.nextPC = nextPc
 }
+func (frame *Frame) NextPc() int {
+	return frame.nextPC
+}
 
-func NewFrame(maxLocals, maxStack uint) *Frame{
-	return &Frame{localVars: newLocalVars(maxLocals),
+func newFrame(thread *Thread, maxLocals, maxStack uint) *Frame{
+	return &Frame{
+		thread:thread,
+		localVars: newLocalVars(maxLocals),
 	operandStack:newOperandStack(maxStack)}
 }

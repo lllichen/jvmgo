@@ -15,7 +15,7 @@ func (reader *ByteCodeReader) ReadUint16() uint16 {
 	return (byte1 <<8) |byte2
 }
 
-func (reader *ByteCodeReader) reset(code []byte, pc int){
+func (reader *ByteCodeReader) Reset(code []byte, pc int){
 	reader.code = code
 	reader.pc = pc
 }

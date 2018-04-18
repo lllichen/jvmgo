@@ -6,7 +6,7 @@ type Thread struct {
 	stack *Stack
 }
 
-func newThread() *Thread{
+func NewThread() *Thread{
 	return &Thread{stack:newStack(1024)}
 }
 
@@ -27,3 +27,12 @@ func (thread *Thread) CurrentFrame( ) *Frame{
 func (thread *Thread) PC() int {
 	return thread.pc
 }
+
+func (thread *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
+	return newFrame(thread,maxLocals,maxStack)
+}
+func (thread *Thread) SetPc(pc int) {
+	thread.pc = pc
+}
+
+
