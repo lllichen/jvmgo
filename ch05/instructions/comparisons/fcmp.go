@@ -1,4 +1,4 @@
-package comparisions
+package comparisons
 
 import (
 	"jvmgo/ch05/instructions/base"
