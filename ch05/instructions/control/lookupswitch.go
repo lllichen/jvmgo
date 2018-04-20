@@ -5,20 +5,20 @@ import (
 	"jvmgo/ch05/rtda"
 )
 
-type LOOK_SWITCH struct {
+type LOOKUP_SWITCH struct {
 	defaultOffset int32
 	npairs  int32
 	matchOffsets []int32
 }
 
-func (lookSwitch *LOOK_SWITCH) FetchOperands(reader *base.ByteCodeReader) {
+func (lookSwitch *LOOKUP_SWITCH) FetchOperands(reader *base.ByteCodeReader) {
 	reader.SkipPadding()
 	lookSwitch.defaultOffset = reader.ReadInt32()
 	lookSwitch.npairs = reader.ReadInt32()
 	lookSwitch.matchOffsets = reader.ReadInt32s(lookSwitch.npairs*2)
 }
 
-func (lookSwitch *LOOK_SWITCH) Execute(frame *rtda.Frame) {
+func (lookSwitch *LOOKUP_SWITCH) Execute(frame *rtda.Frame) {
 	key := frame.OperandStack().PopInt()
 	for i := int32(0); i< lookSwitch.npairs*2; i+=2 {
 		if lookSwitch.matchOffsets[i] == key {

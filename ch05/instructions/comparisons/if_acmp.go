@@ -7,15 +7,24 @@ import (
 
 type IF_ACMPEQ struct { base.BranchInstruction}
 
-func (if_acmpeq *IF_ACMPEQ) Execute(frame *rtda.Frame) {
+func (ifAcmpeq *IF_ACMPEQ) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	ref2 := stack.PopRef()
 	ref1 := stack.PopRef()
-	if ref1 != ref2{
-		base.Branch(frame,if_acmpeq.Offset)
+	if ref1 == ref2{
+		base.Branch(frame,ifAcmpeq.Offset)
 	}
 }
 
 type IF_ACMPNE struct { base.BranchInstruction}
+
+func (ifAcmpne *IF_ACMPNE) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	ref2 := stack.PopRef()
+	ref1 := stack.PopRef()
+	if ref1 != ref2{
+		base.Branch(frame,ifAcmpne.Offset)
+	}
+}
 
 
