@@ -34,8 +34,13 @@ func (lushr *LUSHR) Execute(frame *rtda.Frame) {
 }
 
 
+// long 左位移
+type LSHL struct {base.NoOperandsInstruction}
 
-type LSHL struct {base.NoOperandsInstruction} // long 左位移
+func (*LSHL) Execute(frame *rtda.Frame) {
+	panic("implement me")
+}
+
 type LSHR struct {base.NoOperandsInstruction} // long 算数右位移
 
 func (lshr *LSHR) Execute(frame *rtda.Frame) {

@@ -40,19 +40,7 @@ import "fmt"
 //	fmt.Println("f")
 //}
 
-
-type Test struct {
-	val int
-	val1 int
-}
-
-func (test *Test) String() string {
-	fmt.Println(test.val+test.val1)
-	return "ok"
-}
-
 func main() {
-	t := &Test{1,2}
-	t.String()
+	fmt.Println(1024&1024)
 }
 
