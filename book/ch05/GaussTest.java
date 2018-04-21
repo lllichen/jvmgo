@@ -1,4 +1,4 @@
-package jvm.book.ch05
+package jvmgo.book.ch05;
 
 
 public class GaussTest {
@@ -9,6 +9,6 @@ public class GaussTest {
         for (int i = 0; i <=100 ; i++){
             sum +=i;
         }
-        System.out.Println(sum)
+        System.out.println(sum);
     }
 }
