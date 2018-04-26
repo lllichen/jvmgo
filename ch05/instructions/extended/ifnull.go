@@ -14,12 +14,12 @@ func (ifnull *IFNULL) Execute(frame *rtda.Frame) {
 	}
 }
 
-type IFNOTNULL struct {base.BranchInstruction}
+type IFNONNULL struct {base.BranchInstruction}
 
-func (ifnotnull *IFNOTNULL) Execute(frame *rtda.Frame) {
+func (ifnonnull *IFNONNULL) Execute(frame *rtda.Frame) {
 	ref := frame.OperandStack().PopRef()
-	if ref == nil {
-		base.Branch(frame, ifnotnull.Offset)
+	if ref != nil {
+		base.Branch(frame, ifnonnull.Offset)
 	}
 }
 
