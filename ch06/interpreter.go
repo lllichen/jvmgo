@@ -35,7 +35,7 @@ func loop(thread *rtda.Thread, bytecode []byte){
 	frame := thread.PopFrame()
 	reader := &base.ByteCodeReader{}
 	for {
-		pc := frame.NextPc()
+		pc := frame.NextPC()
 		thread.SetPc(pc)
 
 		//decode
