@@ -36,7 +36,7 @@ func startJVM(cmd *Cmd) {
 	cf := loadClass(className,cp)
 	mainMethod := getMainMethod(cf)
 	if mainMethod != nil {
-		interpret(mainMethod)
+		//interpret(mainMethod)
 	}else {
 		fmt.Printf("Main method not found in class %s\n",cmd.class)
 	}
@@ -57,7 +57,7 @@ func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
 
 func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo{
 	for _,m := range cf.Methods(){
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
+		if m.Name() == "main" && m.Descriptor() == "[Ljava/lang/String;)V" {
 			return m
 		}
 	}
