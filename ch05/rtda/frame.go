@@ -19,8 +19,8 @@ func newFrame(thread *Thread, maxLocals, maxStack uint) *Frame{
 func (frame *Frame) LocalVars() LocalVars {
 	return frame.localVars
 }
-func (frame *Frame) OperandStack() OperandStack {
-	return *frame.operandStack
+func (frame *Frame) OperandStack() *OperandStack {
+	return frame.operandStack
 }
 func (frame *Frame) Thread() *Thread {
 	return frame.thread
