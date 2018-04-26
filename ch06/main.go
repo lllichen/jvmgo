@@ -2,9 +2,9 @@ package main
 
 import "fmt"
 import (
-	"jvmgo/ch05/classpath"
+	"jvmgo/ch06/classpath"
 	"strings"
-	"jvmgo/ch05/classfile"
+	"jvmgo/ch06/classfile"
 )
 
 func main() {
