@@ -2,7 +2,7 @@ package math
 
 import (
 	"jvmgo/ch06/instructions/base"
-	"jvmgo/ch05/rtda"
+	"jvmgo/ch06/rtda"
 )
 
 //int 左位移
