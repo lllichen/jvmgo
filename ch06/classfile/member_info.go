@@ -24,6 +24,9 @@ func (info *MemberInfo) CodeAttribute() *CodeAttribute {
 	}
 	return nil
 }
+func (mi *MemberInfo) AccessFlags() uint16 {
+	return mi.accessFlags
+}
 
 
 func readMembers(reader *ClassReader,cp ConstantPool) []*MemberInfo {

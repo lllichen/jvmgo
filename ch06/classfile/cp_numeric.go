@@ -1,6 +1,8 @@
 package classfile
 
-import "math"
+import (
+	"math"
+)
 
 type ConstantIntegerInfo struct {
 	val int32
@@ -23,15 +25,28 @@ type ConstantDoubleInfo struct {
 func (cti *ConstantIntegerInfo) readInfo(reader *ClassReader) {
 	cti.val = int32( reader.readUint32())
 }
-
-func (cti *ConstantFloatInfo) readInfo(reader *ClassReader) {
-	cti.val = math.Float32frombits( reader.readUint32())
+func (cti *ConstantIntegerInfo) Value() int32 {
+	return cti.val
 }
 
-func (cti *ConstantLongInfo) readInfo(reader *ClassReader) {
-	cti.val = int64( reader.readUint64())
+func (ctf *ConstantFloatInfo) readInfo(reader *ClassReader) {
+	ctf.val = math.Float32frombits( reader.readUint32())
+}
+func (ctf *ConstantFloatInfo) Value() float32 {
+	return ctf.val
 }
 
-func (cti *ConstantDoubleInfo) readInfo(reader *ClassReader) {
-	cti.val = math.Float64frombits( reader.readUint64())
+func (ctl *ConstantLongInfo) readInfo(reader *ClassReader) {
+	ctl.val = int64( reader.readUint64())
+}
+func (ctl *ConstantLongInfo) Value() int64 {
+	return ctl.val
+}
+
+func (ctd *ConstantDoubleInfo) readInfo(reader *ClassReader) {
+	ctd.val = math.Float64frombits( reader.readUint64())
+}
+
+func (ctd *ConstantDoubleInfo) Value() float64 {
+	return ctd.val
 }
