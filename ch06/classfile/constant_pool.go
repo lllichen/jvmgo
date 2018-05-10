@@ -22,6 +22,9 @@ func (cp ConstantPool) getNameAndType(index uint16) (string, string) {
 	_type := cp.getUtf8(cnt.descriptorIndex)
 	return name,_type
 }
+func (cp *ConstantPool) GetConstant(cpIndex uint16) uint {
+	//return cp.getConstantInfo(cpIndex)
+}
 
 
 
