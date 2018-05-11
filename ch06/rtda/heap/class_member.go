@@ -37,3 +37,7 @@ func (classMember *ClassMember) isAccessibleTo(d *Class) bool {
 func (classMember *ClassMember) Class() *Class{
 	return classMember.class
 }
+
+func (classMember *ClassMember) Name() string {
+	return classMember.name
+}

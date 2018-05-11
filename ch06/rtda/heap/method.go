@@ -34,3 +34,7 @@ func (method *Method) MaxLocals() uint {
 func (method *Method) MaxStack() uint {
 	return method.maxStack
 }
+func (method *Method) Code() []byte {
+	return method.code
+}
+

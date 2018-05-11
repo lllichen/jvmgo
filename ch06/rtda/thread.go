@@ -1,5 +1,6 @@
 package rtda
 
+import "jvmgo/ch06/rtda/heap"
 
 type Thread struct {
 	pc int
@@ -28,8 +29,8 @@ func (thread *Thread) PC() int {
 	return thread.pc
 }
 
-func (thread *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
-	return newFrame(thread,maxLocals,maxStack)
+func (thread *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(thread,method)
 }
 func (thread *Thread) SetPc(pc int) {
 	thread.pc = pc
