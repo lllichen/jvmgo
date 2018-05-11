@@ -13,7 +13,7 @@ type INVOKE_VIRTUAL struct {
 
 func (invokeVirtual *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
-	methodRef := cp.GetConstant(self.Index).(*heap.MethodRef)
+	methodRef := cp.GetConstant(invokeVirtual.Index).(*heap.MethodRef)
 	if methodRef.Name() == "println" {
 		stack := frame.OperandStack()
 		switch methodRef.Descriptor() {
