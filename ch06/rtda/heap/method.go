@@ -37,4 +37,7 @@ func (method *Method) MaxStack() uint {
 func (method *Method) Code() []byte {
 	return method.code
 }
+func (method *Method) IsStatic() bool{
+	return false;
+}
 

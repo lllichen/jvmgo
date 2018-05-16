@@ -1,14 +1,22 @@
 package heap
 
-import "jvmgo/ch06/classfile"
+import (
+	"jvmgo/ch06/classfile"
+	"fmt"
+)
 
-type Constant interface {
-
-}
+type Constant interface {}
 
 type ConstantPool struct {
 	class *Class
 	consts []Constant
+}
+
+func (constantPool *ConstantPool) getConstant(index uint) Constant {
+	if c := constantPool.consts[index]; c != nil {
+		return c;
+	}
+	panic(fmt.Sprintf("No constants at index %d", index))
 }
 
 func newConstantPool (class *Class, cfCp classfile.ConstantPool) *ConstantPool {

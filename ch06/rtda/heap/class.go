@@ -10,7 +10,7 @@ type Class struct {
 	name string
 	superClassName string
 	interfaceNames []string
-	constantsPool *classfile.ConstantPool
+	constantsPool *ConstantPool
 	fields []*Field
 	methods []*Method
 	loader *ClassLoader
@@ -27,15 +27,53 @@ func newClass(file *classfile.ClassFile) *Class {
 	class.accessFlags = file.AccessFlags()
 	class.name = file.ClassName()
 	class.superClassName = file.SuperClassName()
-	class.interfaces = file.InterfaceNames()
+	class.interfaceNames = file.InterfaceNames()
 	class.constantsPool = newConstantPool(class,file.ConstantPool())
 	class.fields = newFields(class,file.Fields())
 	class.methods = newMethods(class,file.Methods())
 	return class
 }
 
+func (class *Class) IsPublic() bool{
+	return 0 != class.accessFlags&ACC_PUBLIC
+}
+
+func (class *Class) IsFinal() bool{
+	return 0 != class.accessFlags&ACC_FINAL
+}
+
+
+func (class *Class) IsSuper() bool{
+	return 0 != class.accessFlags&ACC_SUPER
+}
+
+
+func (class *Class) IsInterface() bool{
+	return 0 != class.accessFlags&ACC_INTERFACE
+}
+
+func (class *Class) IsAbstract() bool{
+	return 0 != class.accessFlags&ACC_ABSTRACT
+}
+
+
+func (class *Class) IsSynthetic() bool{
+	return 0 != class.accessFlags&ACC_SYNTHETIC
+}
+
+
+func (class *Class) IsAnnotation() bool{
+	return 0 != class.accessFlags&ACC_ANNOTATION
+}
+
+
+func (class *Class) IsEnum() bool{
+	return 0 != class.accessFlags&ACC_ENUM
+}
+
+
 func (class *Class) isAccessibleTo(other *Class) bool {
-	return class.isPublic() || class.getPackageName() == other.getPackageName()
+	return class.IsPublic() || class.getPackageName() == other.getPackageName()
 }
 
 func (class *Class) getPackageName() string{
@@ -44,7 +82,7 @@ func (class *Class) getPackageName() string{
 	}
 	return ""
 }
-func (class *Class) ConstantPool() *classfile.ConstantPool {
+func (class *Class) ConstantPool() *ConstantPool {
 	return class.constantsPool
 }
 func (class *Class) NewObject() *Object {
