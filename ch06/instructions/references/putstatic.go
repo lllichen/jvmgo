@@ -15,22 +15,22 @@ func (putStatic *PUT_STATIC) Execute(frame *rtda.Frame) {
 	currentClass := currentMethod.Class()
 	cp := currentClass.ConstantPool()
 	fieldRef := cp.GetConstant(putStatic.Index).(*heap.FieldRef)
-	field := fieldRef.ResolvedFieldRef()
+	field := fieldRef.ResolvedField()
 	class := field.Class()
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeRef")
 	}
-	if !field.IsFianl() {
-		if currentClass != class || currentMethod.Name() != "<clint>" {
+	if field.IsFinal() {
+		if currentClass != class || currentMethod.Name() != "<clinit>" {
 			panic("java.lang.IllegalAccessError")
 		}
 	}
-	decriptor := field.Descriptor()
+	descriptor := field.Descriptor()
 	slotId := field.SlotId()
 	slots := class.StaticVars()
 	stack := frame.OperandStack()
 
-	switch decriptor[0] {
+	switch descriptor[0] {
 	case 'Z', 'B', 'C', 'S', 'I':
 		slots.SetInt(slotId, stack.PopInt())
 	case 'F':

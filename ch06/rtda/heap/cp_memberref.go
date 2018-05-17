@@ -13,4 +13,13 @@ func (memberRef *MemberRef) copyMemberRefInfo (refInfo *classfile.ConstantMember
 	memberRef.name,memberRef.descriptor = refInfo.NameAndDescriptor()
 }
 
+func ( memberRef *MemberRef) Name() string{
+	return memberRef.name
+}
+
+
+func ( memberRef *MemberRef) Descriptor() string{
+	return memberRef.descriptor
+}
+
 

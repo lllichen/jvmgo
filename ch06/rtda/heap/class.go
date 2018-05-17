@@ -86,11 +86,15 @@ func (class *Class) ConstantPool() *ConstantPool {
 	return class.constantsPool
 }
 func (class *Class) NewObject() *Object {
+	return newObject(class)
+}
+func  newObject(class *Class) *Object {
 	return &Object{
 		class : class,
 		fields: newSlots(class.instanceSlotCount),
 	}
 }
+
 func (class *Class) StaticVars() Slots {
 	return class.staticVars
 }

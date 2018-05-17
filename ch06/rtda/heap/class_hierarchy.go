@@ -1,6 +1,6 @@
 package heap
 
-func (class *Class) isAssignableForm(other *Class) bool {
+func (class *Class) isAssignableFrom(other *Class) bool {
 	s,t := other,class
 	if s == t {
 		return true

@@ -14,7 +14,7 @@ type Frame struct {
 func newFrame(thread *Thread, method *heap.Method) *Frame {
 	return &Frame{
 		thread:       thread,
-		method:method,
+		method:       method,
 		localVars:    newLocalVars(method.MaxLocals()),
 		operandStack: newOperandStack(method.MaxStack())}
 }
@@ -36,6 +36,6 @@ func (frame *Frame) NextPC() int {
 func (frame *Frame) SetNextPC(nextPc int) {
 	frame.nextPC = nextPc
 }
-func (frame *Frame) Method() *heap.Method{
+func (frame *Frame) Method() *heap.Method {
 	return frame.method
 }

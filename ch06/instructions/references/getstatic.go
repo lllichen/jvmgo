@@ -13,7 +13,7 @@ type GET_STATIC struct {
 func (getStatic *GET_STATIC) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
 	fielRef := cp.GetConstant(getStatic.Index).(*heap.FieldRef)
-	field := fielRef.ResolvedFieldRef()
+	field := fielRef.ResolvedField()
 	class := field.Class()
 
 	if !field.IsStatic() {

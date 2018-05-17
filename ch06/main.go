@@ -34,17 +34,6 @@ func startJVM(cmd *Cmd) {
 	}
 }
 
-func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
-	classData,_, err := cp.ReadClass(className)
-	if err != nil {
-		panic(err)
-	}
-	cf, err := classfile.Parse(classData)
-	if err != nil {
-		panic(err)
-	}
-	return cf
-}
 
 func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo{
 	for _,m := range cf.Methods(){

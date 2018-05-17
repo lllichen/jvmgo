@@ -15,7 +15,7 @@ func (putField *PUT_FIELD) Execute(frame *rtda.Frame) {
 	currentClass := currentMethod.Class()
 	cp := currentClass.ConstantPool()
 	fieldRef := cp.GetConstant(putField.Index).(*heap.FieldRef)
-	field := fieldRef.ResolvedFieldRef()
+	field := fieldRef.ResolvedField()
 	if field.IsStatic() {
 		panic("javas.lang.IncompatibleClassChangeError")
 	}

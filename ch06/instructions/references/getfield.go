@@ -6,14 +6,14 @@ import (
 	"jvmgo/ch06/rtda/heap"
 )
 
-type Get_FIELD struct {
+type GET_FIELD struct {
 	base.Index16Instruction
 }
 
-func (getField *Get_FIELD) Execute(frame *rtda.Frame) {
+func (getField *GET_FIELD) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
 	fieldRef := cp.GetConstant(getField.Index).(*heap.FieldRef)
-	field := fieldRef.ResolvedFieldRef()
+	field := fieldRef.ResolvedField()
 	if field.IsStatic(){
 		panic("java.lang.IncompatibleChangeError")
 	}
