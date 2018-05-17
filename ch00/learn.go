@@ -41,6 +41,6 @@ import "fmt"
 //}
 
 func main() {
-	fmt.Println(1024&1024)
+	fmt.Println( 1024&2)
 }
 

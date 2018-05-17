@@ -12,9 +12,9 @@ type ConstantPool struct {
 	consts []Constant
 }
 
-func (constantPool *ConstantPool) getConstant(index uint) Constant {
+func (constantPool *ConstantPool) GetConstant(index uint) Constant {
 	if c := constantPool.consts[index]; c != nil {
-		return c;
+		return c
 	}
 	panic(fmt.Sprintf("No constants at index %d", index))
 }

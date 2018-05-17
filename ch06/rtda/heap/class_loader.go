@@ -11,9 +11,9 @@ type ClassLoader struct {
 	classMap map[string]*Class //loaded classes
 }
 
-func NewClassLoader(pool *classpath.Classpath) *ClassLoader {
+func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
 	return &ClassLoader{
-		cp:       pool,
+		cp:       cp,
 		classMap: make(map[string]*Class),
 	}
 }

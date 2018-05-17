@@ -41,3 +41,13 @@ func (classMember *ClassMember) Class() *Class{
 func (classMember *ClassMember) Name() string {
 	return classMember.name
 }
+func (classMember *ClassMember) IsPublic() bool{
+	return 0 != classMember.accessFlags&ACC_PUBLIC
+}
+
+func (classMember *ClassMember) IsProtected() bool{
+	return 0 != classMember.accessFlags&ACC_PROTECTED
+}
+func (classMember *ClassMember) IsPrivate() bool{
+	return 0 != classMember.accessFlags&ACC_PRIVATE
+}

@@ -38,3 +38,13 @@ func (field *Field) copyAttributes(info *classfile.MemberInfo) {
 		field.constValueIndex = uint(valAttr.ConstantValueIndex())
 	}
 }
+func (field *Field) IsStatic() bool {
+	return 0 != field.accessFlags&ACC_STATIC
+}
+func (field *Field) IsFinal() bool{
+	return 0 != field.accessFlags&ACC_FINAL
+}
+func (field *Field) ConstValueIndex() uint {
+	return field.constValueIndex
+}
+

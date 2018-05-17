@@ -38,6 +38,6 @@ func (method *Method) Code() []byte {
 	return method.code
 }
 func (method *Method) IsStatic() bool{
-	return false;
+	return 0 != method.accessFlags&ACC_STATIC
 }
 
