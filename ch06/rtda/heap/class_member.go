@@ -25,12 +25,10 @@ func (classMember *ClassMember) isAccessibleTo(d *Class) bool {
 		return d == c || d.isSubClassOf(c) || c.getPackageName() == d.getPackageName()
 	}
 
-	if classMember.IsPrivate() {
+	if !classMember.IsPrivate() {
 		return c.getPackageName() == d.getPackageName()
 	}
-
 	return d == c
-
 }
 
 

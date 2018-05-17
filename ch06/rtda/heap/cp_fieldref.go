@@ -30,7 +30,7 @@ func (fieldRef *FieldRef) resolveFieldRef() {
 	if fieldRef == nil {
 		panic("java.lang.NoSuchFieldError")
 	}
-	if !fieldRef.isAccessibleTo(d) {
+	if !field.isAccessibleTo(d) {
 		panic("java.lang.IllegalAccessError")
 	}
 	fieldRef.field = field
