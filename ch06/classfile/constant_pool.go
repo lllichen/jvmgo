@@ -16,17 +16,13 @@ func (cp ConstantPool) getClassName(index uint16) string {
 	classInfo := cp.getConstantInfo(index).(*ConstantClassInfo)
 	return cp.getUtf8(classInfo.nameIndex)
 }
+
 func (cp ConstantPool) getNameAndType(index uint16) (string, string) {
 	cnt := cp.getConstantInfo(index).(*ConstantNameAndTypeInfo)
 	name := cp.getUtf8(cnt.nameIndex)
 	_type := cp.getUtf8(cnt.descriptorIndex)
 	return name,_type
 }
-func (cp *ConstantPool) GetConstant(cpIndex uint16) uint {
-	//return cp.getConstantInfo(cpIndex)
-}
-
-
 
 func readConstantPool(reader *ClassReader) ConstantPool {
 	cpCount := int(reader.readUint16())
