@@ -1,5 +1,7 @@
 package classfile
 
+import "fmt"
+
 type ConstantPool []ConstantInfo
 
 func (cp ConstantPool) getUtf8(index uint16) string {
@@ -10,7 +12,7 @@ func (cp ConstantPool) getConstantInfo(index uint16) ConstantInfo{
 	if cpInfo := cp[index];cpInfo != nil {
 		return cpInfo
 	}
-	panic("Invalid constant pool index!")
+	panic(fmt.Errorf("Invalid constant pool index: %v!", index))
 }
 func (cp ConstantPool) getClassName(index uint16) string {
 	classInfo := cp.getConstantInfo(index).(*ConstantClassInfo)
