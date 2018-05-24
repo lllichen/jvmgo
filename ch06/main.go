@@ -4,7 +4,6 @@ import "fmt"
 import (
 	"jvmgo/ch06/classpath"
 	"strings"
-	"jvmgo/ch06/classfile"
 	"jvmgo/ch06/rtda/heap"
 )
 
@@ -34,13 +33,4 @@ func startJVM(cmd *Cmd) {
 	}
 }
 
-
-func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo{
-	for _,m := range cf.Methods(){
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
-			return m
-		}
-	}
-	return nil
-}
 
