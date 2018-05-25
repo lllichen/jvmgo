@@ -58,8 +58,8 @@ func newConstantPool (class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 			methodRefInfo := cpInfo.(*classfile.ConstantMethodRefInfo)
 			consts[i] = newMethodRef(rtCp,methodRefInfo)
 
-		case *classfile.ConstantInterfaceRefInfo:
-			interfaceRefInfo := cpInfo.(*classfile.ConstantInterfaceRefInfo)
+		case *classfile.ConstantInterfaceMethodRefInfo:
+			interfaceRefInfo := cpInfo.(*classfile.ConstantInterfaceMethodRefInfo)
 			consts[i] = newInterfaceMethodRef(rtCp,interfaceRefInfo)
  		}
 	}

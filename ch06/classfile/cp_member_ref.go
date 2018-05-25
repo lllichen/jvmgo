@@ -6,7 +6,7 @@ type ConstantMemberRefInfo struct {
 	nameAndTypeIndex uint16
 }
 
-func (cmi ConstantMemberRefInfo) readInfo (reader *ClassReader) {
+func (cmi *ConstantMemberRefInfo) readInfo (reader *ClassReader) {
 	cmi.classIndex = reader.readUint16()
 	cmi.nameAndTypeIndex = reader.readUint16()
 }
@@ -31,6 +31,6 @@ type ConstantMethodRefInfo struct {
 }
 
 
-type ConstantInterfaceRefInfo struct {
+type ConstantInterfaceMethodRefInfo struct {
 	ConstantMemberRefInfo
 }
