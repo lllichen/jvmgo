@@ -1,8 +1,8 @@
 package constants
 
 import (
-	"jvmgo/ch06/instructions/base"
-	"jvmgo/ch06/rtda"
+	"jvmgo/ch07/instructions/base"
+	"jvmgo/ch07/rtda"
 )
 
 type ACONST_NULL struct {

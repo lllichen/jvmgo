@@ -1,11 +1,11 @@
 package main
 
 import (
-	"jvmgo/ch06/rtda"
+	"jvmgo/ch07/rtda"
 	"fmt"
-	"jvmgo/ch06/instructions/base"
-	"jvmgo/ch06/instructions"
-	"jvmgo/ch06/rtda/heap"
+	"jvmgo/ch07/instructions/base"
+	"jvmgo/ch07/instructions"
+	"jvmgo/ch07/rtda/heap"
 )
 
 func interpret(method *heap.Method)  {
