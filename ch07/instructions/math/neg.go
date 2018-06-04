@@ -1,8 +1,8 @@
 package math
 
 import (
-	"jvmgo/ch07/instructions/base"
-	"jvmgo/ch07/rtda"
+	"jvmgo/ch06/instructions/base"
+	"jvmgo/ch06/rtda"
 )
 
 type INEG struct {

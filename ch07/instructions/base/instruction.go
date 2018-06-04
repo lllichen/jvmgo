@@ -1,6 +1,6 @@
 package base
 
-import "jvmgo/ch07/rtda"
+import "jvmgo/ch06/rtda"
 
 type Instruction interface {
 	FetchOperands(reader *ByteCodeReader)

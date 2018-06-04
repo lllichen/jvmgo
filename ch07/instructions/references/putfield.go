@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvmgo/ch06/instructions/base"
-	"jvmgo/ch06/rtda"
-	"jvmgo/ch06/rtda/heap"
+	"jvmgo/ch07/instructions/base"
+	"jvmgo/ch07/rtda"
+	"jvmgo/ch07/rtda/heap"
 )
 
 type PUT_FIELD struct {

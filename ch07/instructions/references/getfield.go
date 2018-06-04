@@ -3,7 +3,7 @@ package references
 import (
 	"jvmgo/ch07/instructions/base"
 	"jvmgo/ch07/rtda"
-	"jvmgo/ch06/rtda/heap"
+	"jvmgo/ch07/rtda/heap"
 )
 
 type GET_FIELD struct {

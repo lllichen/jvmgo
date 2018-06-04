@@ -1,8 +1,8 @@
 package references
 
 import (
-	"jvmgo/ch06/rtda"
-	"jvmgo/ch06/instructions/base"
+	"jvmgo/ch07/rtda"
+	"jvmgo/ch07/instructions/base"
 )
 
 type INVOKE_SPECIAL struct {
