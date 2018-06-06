@@ -36,4 +36,8 @@ func (thread *Thread) SetPc(pc int) {
 	thread.pc = pc
 }
 
+func (thread *Thread) TopFrame() *Frame {
+	return thread.stack.top()
+}
+
 

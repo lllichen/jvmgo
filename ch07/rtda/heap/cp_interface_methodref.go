@@ -14,15 +14,40 @@ func newInterfaceMethodRef(cp *ConstantPool, refInfo *classfile.ConstantInterfac
 	return ref
 }
 
-func (self *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
-	if self.method == nil {
-		self.resolveInterfaceMethodRef()
+func (interfaceMethodRef *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
+	if interfaceMethodRef.method == nil {
+		interfaceMethodRef.resolveInterfaceMethodRef()
 	}
-	return self.method
+	return interfaceMethodRef.method
 }
 
 // jvms8 5.4.3.4
-func (self *InterfaceMethodRef) resolveInterfaceMethodRef() {
-	//class := self.ResolveClass()
-	// todo
+func (interfaceMethodRef *InterfaceMethodRef) resolveInterfaceMethodRef() {
+	d := interfaceMethodRef.cp.class
+	c := interfaceMethodRef.ResolvedClass()
+
+	if !c.IsInterface() {
+		panic("java.lang.IncompatibleClassChangeError")
+	}
+
+	method := lookupInterfaceMethod(c, interfaceMethodRef.name, interfaceMethodRef.descriptor)
+
+	if method == nil {
+		panic("java.lang.NoSuchMethodError")
+	}
+
+	if !method.isAccessibleTo(d) {
+		panic("java.lang.IllegalAccessError")
+	}
+
+	interfaceMethodRef.method = method
+}
+
+func lookupInterfaceMethod(iface *Class, name ,description string ) *Method {
+	for _,method := range iface.methods {
+		if method.name == name && method.descriptor == description {
+			return method
+		}
+	}
+	return lookupMethodInInterfaces(iface.interfaces, name, description)
 }

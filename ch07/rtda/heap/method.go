@@ -7,6 +7,7 @@ type Method struct {
 	maxStack uint
 	maxLocals uint
 	code []byte
+	argSlotCount uint
 }
 
 
@@ -17,6 +18,7 @@ func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
 		methods[i].class = class
 		methods[i].copyMemberInfo(cfMethod)
 		methods[i].copyAttributes(cfMethod)
+		methods[i].calcArgSlotCount()
 	}
 	return methods
 }
@@ -40,4 +42,15 @@ func (method *Method) Code() []byte {
 func (method *Method) IsStatic() bool{
 	return 0 != method.accessFlags&ACC_STATIC
 }
+
+func (method *Method) ArgSlotCount() uint {
+	return method.argSlotCount
+}
+func (method *Method) calcArgSlotCount() {
+	parsedDescriptor := parseMethodDescriptor(method.descriptor)
+	for _, paramType := range parsedDescriptor.parameterTypes {
+
+	}
+}
+
 
