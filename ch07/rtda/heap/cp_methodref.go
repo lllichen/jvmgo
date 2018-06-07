@@ -14,13 +14,13 @@ func newMethodRef(pool *ConstantPool,info *classfile.ConstantMethodRefInfo) *Met
 	return ref
 }
 
-func (methodRef *MethodRef) resolveMethod() *Method {
+func (methodRef *MethodRef) ResolvedMethod() *Method {
 	if methodRef.method == nil {
-		methodRef.resolveMethodRef()
+		methodRef.resolvedMethodRef()
 	}
 	return methodRef.method
 }
-func (methodRef *MethodRef) resolveMethodRef() {
+func (methodRef *MethodRef) resolvedMethodRef() {
 	d := methodRef.cp.class
 	c := methodRef.ResolvedClass()
 	if c.IsInterface() {
@@ -37,7 +37,7 @@ func (methodRef *MethodRef) resolveMethodRef() {
 	methodRef.method = method
 }
 func lookeupMethod(class *Class, name string, descriptor string) *Method {
-	method := LookupMethodInClass(class,name.descriptor)
+	method := LookupMethodInClass(class,name,descriptor)
 	if method == nil {
 		method = lookupMethodInInterfaces(class.interfaces, name, descriptor)
 	}
