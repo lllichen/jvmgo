@@ -22,11 +22,11 @@ func (classMember *ClassMember) isAccessibleTo(d *Class) bool {
 	c := classMember.class
 
 	if classMember.IsProtected() {
-		return d == c || d.isSubClassOf(c) || c.getPackageName() == d.getPackageName()
+		return d == c || d.IsSubClassOf(c) || c.GetPackageName() == d.GetPackageName()
 	}
 
 	if !classMember.IsPrivate() {
-		return c.getPackageName() == d.getPackageName()
+		return c.GetPackageName() == d.GetPackageName()
 	}
 	return d == c
 }
@@ -39,6 +39,11 @@ func (classMember *ClassMember) Class() *Class{
 func (classMember *ClassMember) Name() string {
 	return classMember.name
 }
+
+func (classMember *ClassMember) Descriptor() string {
+	return classMember.descriptor
+}
+
 func (classMember *ClassMember) IsPublic() bool{
 	return 0 != classMember.accessFlags&ACC_PUBLIC
 }
@@ -48,4 +53,8 @@ func (classMember *ClassMember) IsProtected() bool{
 }
 func (classMember *ClassMember) IsPrivate() bool{
 	return 0 != classMember.accessFlags&ACC_PRIVATE
+}
+
+func (classMember *ClassMember) IsAbstract() bool{
+	return 0 != classMember.accessFlags&ACC_ABSTRACT
 }

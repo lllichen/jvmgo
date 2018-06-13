@@ -49,7 +49,13 @@ func (method *Method) ArgSlotCount() uint {
 func (method *Method) calcArgSlotCount() {
 	parsedDescriptor := parseMethodDescriptor(method.descriptor)
 	for _, paramType := range parsedDescriptor.parameterTypes {
-
+		method.argSlotCount++
+		if paramType == "J" || paramType == "D" {
+			method.argSlotCount++
+		}
+	}
+	if !method.IsStatic() {
+		method.argSlotCount++
 	}
 }
 

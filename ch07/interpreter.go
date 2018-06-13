@@ -18,7 +18,7 @@ func interpret(method *heap.Method, logInst bool)  {
 
 }
 
-func catchErr(thead *rtda.Thread) {
+func catchErr(thread *rtda.Thread) {
 	if r := recover(); r != nil {
 		logFrames(thread)
 		panic(r)

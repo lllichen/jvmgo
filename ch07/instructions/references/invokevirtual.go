@@ -30,7 +30,7 @@ func (invokeVirtual *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.NullPointerException")
 	}
 
-	if resolvedMethod.IsProtected() && resolvedMethod.Class.IsSuperClassOf(currentClass) &&
+	if resolvedMethod.IsProtected() && resolvedMethod.Class().IsSuperClassOf(currentClass) &&
 		resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() && ref.Class() != currentClass && !ref.Class().IsSubClassOf(currentClass) {
 			panic("java.lang.IllegalAccessError")
 	}

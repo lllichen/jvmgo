@@ -74,10 +74,10 @@ func (class *Class) IsEnum() bool{
 
 
 func (class *Class) isAccessibleTo(other *Class) bool {
-	return class.IsPublic() || class.getPackageName() == other.getPackageName()
+	return class.IsPublic() || class.GetPackageName() == other.GetPackageName()
 }
 
-func (class *Class) getPackageName() string{
+func (class *Class) GetPackageName() string{
 	if i := strings.LastIndex(class.name,"/"); i>= 0 {
 		return class.name[:1]
 	}
@@ -89,16 +89,17 @@ func (class *Class) ConstantPool() *ConstantPool {
 func (class *Class) NewObject() *Object {
 	return newObject(class)
 }
-func  newObject(class *Class) *Object {
-	return &Object{
-		class : class,
-		fields: newSlots(class.instanceSlotCount),
-	}
+func  NewObject(class *Class) *Object {
+	return newObject(class)
 }
 
 func (class *Class) StaticVars() Slots {
 	return class.staticVars
 }
+func (class *Class) Name() string{
+	return class.name
+}
+
 func (class *Class) GetMainMethod() *Method {
 	return class.getStaticMethod("main", "([Ljava/lang/String;)V")
 }
@@ -109,6 +110,10 @@ func (class *Class) getStaticMethod(name string, descriptor string) *Method {
 		}
 	}
 	return nil
+}
+
+func (class *Class) SuperClass() *Class {
+	return class.superClass
 }
 
 
