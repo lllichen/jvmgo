@@ -40,4 +40,8 @@ func (thread *Thread) TopFrame() *Frame {
 	return thread.stack.top()
 }
 
+func (thread *Thread) IsStackEmpty() bool {
+	return thread.stack.isEmpty()
+}
+
 

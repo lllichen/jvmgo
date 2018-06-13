@@ -39,5 +39,9 @@ func (stack *Stack) top() *Frame{
 
 
 func newStack(maxSize uint) *Stack {
-return &Stack{maxSize:maxSize}
+	return &Stack{maxSize:maxSize}
+}
+
+func (stack *Stack) isEmpty() bool {
+	return stack._top == nil
 }
