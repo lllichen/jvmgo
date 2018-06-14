@@ -1,7 +1,7 @@
 package heap
 
 import (
-	"jvmgo/ch07/classfile"
+	"jvmgo/ch08/classfile"
 	"strings"
 )
 
@@ -19,7 +19,7 @@ type Class struct {
 	instanceSlotCount uint
 	staticSlotCount uint
 	staticVars Slots
-	//initStarted bool
+	initStarted bool
 }
 
 
@@ -116,4 +116,15 @@ func (class *Class) SuperClass() *Class {
 	return class.superClass
 }
 
+func (class *Class) GetClinitMethod() *Method {
+	return class.getStaticMethod("<clinit>", "()V")
+}
 
+func (class *Class) InitStarted() bool {
+	return class.initStarted
+}
+
+
+func (class *Class) StartInit() {
+	class.initStarted = true
+}

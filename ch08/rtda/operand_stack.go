@@ -2,7 +2,7 @@ package rtda
 
 import (
 	"math"
-	"jvmgo/ch07/rtda/heap"
+	"jvmgo/ch08/rtda/heap"
 )
 
 type OperandStack struct {

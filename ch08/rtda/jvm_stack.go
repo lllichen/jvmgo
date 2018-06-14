@@ -8,10 +8,10 @@ type Stack struct {
 }
 
 func (stack *Stack) push(frame *Frame) {
-	if stack.size > stack.maxSize {
+	if stack.size >= stack.maxSize {
 		panic("java.lang.StackOverflowError")
 	}
-	if stack._top == nil {
+	if stack._top != nil {
 		frame.lower = stack._top
 	}
 	stack._top = frame

@@ -1,6 +1,6 @@
 package heap
 
-import "jvmgo/ch07/classfile"
+import "jvmgo/ch08/classfile"
 
 type Method struct {
 	ClassMember
@@ -39,8 +39,9 @@ func (method *Method) MaxStack() uint {
 func (method *Method) Code() []byte {
 	return method.code
 }
-func (method *Method) IsStatic() bool{
-	return 0 != method.accessFlags&ACC_STATIC
+
+func (self *Method) IsNative() bool {
+	return 0 != self.accessFlags&ACC_NATIVE
 }
 
 func (method *Method) ArgSlotCount() uint {

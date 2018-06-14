@@ -1,6 +1,6 @@
 package heap
 
-import "jvmgo/ch07/classfile"
+import "jvmgo/ch08/classfile"
 
 type ClassMember struct {
 	accessFlags uint16
@@ -57,4 +57,15 @@ func (classMember *ClassMember) IsPrivate() bool{
 
 func (classMember *ClassMember) IsAbstract() bool{
 	return 0 != classMember.accessFlags&ACC_ABSTRACT
+}
+
+func (classMember *ClassMember) IsStatic() bool {
+	return 0 != classMember.accessFlags&ACC_STATIC
+}
+
+func (classMember *ClassMember) IsFinal() bool {
+	return 0 != classMember.accessFlags&ACC_FINAL
+}
+func (classMember *ClassMember) IsSynthetic() bool {
+	return 0 != classMember.accessFlags&ACC_SYNTHETIC
 }

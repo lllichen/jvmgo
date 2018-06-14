@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvmgo/ch07/rtda"
-	"jvmgo/ch07/instructions/base"
-	"jvmgo/ch07/rtda/heap"
+	"jvmgo/ch08/rtda"
+	"jvmgo/ch08/instructions/base"
+	"jvmgo/ch08/rtda/heap"
 )
 
 type INVOKE_INTERFACE struct {

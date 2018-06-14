@@ -1,8 +1,8 @@
 package conversions
 
 import (
-	"jvmgo/ch07/instructions/base"
-	"jvmgo/ch07/rtda"
+	"jvmgo/ch08/instructions/base"
+	"jvmgo/ch08/rtda"
 )
 
 type I2L struct {

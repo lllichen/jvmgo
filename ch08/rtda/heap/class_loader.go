@@ -1,9 +1,9 @@
 package heap
 
 import (
-	"jvmgo/ch07/classpath"
+	"jvmgo/ch08/classpath"
 	"fmt"
-	"jvmgo/ch07/classfile"
+	"jvmgo/ch08/classfile"
 )
 
 type ClassLoader struct {
@@ -138,7 +138,7 @@ func allocAndInitStaticVars(class *Class) {
 
 func initStaticFinalVar(class *Class,field *Field) {
 	vars := class.staticVars
-	cp := class.constantsPool
+	cp := class.ConstantPool()
 	cpIndex := field.ConstValueIndex()
 	slotId := field.SlotId()
 
