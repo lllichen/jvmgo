@@ -17,6 +17,13 @@ func (invokeStatic *INVOKE_STATIC) Execute(frame *rtda.Frame) {
 	if !resolveMethod.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
+
+	class := resolveMethod.Class()
+	if !class.InitStarted(){
+		frame.RevertNextPC()
+		base.InitClass(frame.Thread(), class)
+		return
+	}
 	base.InvokeMethod(frame,resolveMethod)
 }
 

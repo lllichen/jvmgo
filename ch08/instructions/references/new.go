@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvmgo/ch08/instructions/base"
-	"jvmgo/ch08/rtda"
-	"jvmgo/ch08/rtda/heap"
+	"jvmgo/ch07/instructions/base"
+	"jvmgo/ch07/rtda"
+	"jvmgo/ch07/rtda/heap"
 )
 
 type NEW struct {
@@ -14,6 +14,13 @@ func (new *NEW) Execute(frame *rtda.Frame) {
 	cp  := frame.Method().Class().ConstantPool()
 	classRef := cp.GetConstant(new.Index).(*heap.ClassRef)
 	class := classRef.ResolvedClass()
+
+	if !class.InitStarted() {
+		frame.RevertNextPC()
+		base.InitClass(frame.Thread(),class)
+		return
+	}
+
 	if class.IsInterface() || class.IsAbstract() {
 		panic("java.lang.InstantiationError")
 	}

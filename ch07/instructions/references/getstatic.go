@@ -15,7 +15,11 @@ func (getStatic *GET_STATIC) Execute(frame *rtda.Frame) {
 	fielRef := cp.GetConstant(getStatic.Index).(*heap.FieldRef)
 	field := fielRef.ResolvedField()
 	class := field.Class()
-
+	if !class.InitStarted(){
+		frame.RevertNextPC()
+		base.InitClass(frame.Thread(),class)
+		return
+	}
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
