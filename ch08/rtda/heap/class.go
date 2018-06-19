@@ -128,3 +128,11 @@ func (class *Class) InitStarted() bool {
 func (class *Class) StartInit() {
 	class.initStarted = true
 }
+func (class *Class) Loader() *ClassLoader {
+	return class.loader
+}
+
+func (class *Class) ArrayClass() *Class {
+	arrayClassName := getArrayClassName(class.name)
+	return class.loader.LoadClass(arrayClassName)
+}
