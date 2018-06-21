@@ -1,4 +1,4 @@
-package jvmgo.book.ch08
+package jvmgo.book.ch08;
 
 
 public class BubbleSortTest {
@@ -18,7 +18,7 @@ public class BubbleSortTest {
             while(swapped){
                 swapped = false;
                 j++;
-                for (int i=0; i < arr.length - j; j++) {
+                for (int i=0; i < arr.length - j; i++) {
                     if (arr[i] > arr[i+1]) {
                         tmp = arr[i];
                         arr[i] = arr[i+1];
