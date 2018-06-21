@@ -145,7 +145,7 @@ func checkNotNil(ref *heap.Object) {
 }
 
 func checkIndex(arrLen int, index int32) {
-	if index <0 || index > int32(arrLen) {
+	if index <0 || index >= int32(arrLen) {
 		panic("ArrayIndexOutOfBoundException")
 	}
 }

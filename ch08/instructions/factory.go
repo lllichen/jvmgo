@@ -545,12 +545,12 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return &INVOKE_DYNAMIC{}
 	case 0xbb:
 		return &NEW{}
-	// case 0xbc:
-	// 	return &NEW_ARRAY{}
-	// case 0xbd:
-	// 	return &ANEW_ARRAY{}
-	// case 0xbe:
-	// 	return arraylength
+	case 0xbc:
+		return &NEW_ARRAY{}
+	case 0xbd:
+		return &ANEW_ARRAY{}
+	case 0xbe:
+		return arraylength
 	// case 0xbf:
 	// 	return athrow
 	case 0xc0:
@@ -563,8 +563,8 @@ func NewInstruction(opcode byte) base.Instruction {
 	// 	return monitorexit
 	case 0xc4:
 		return &WIDE{}
-	// case 0xc5:
-	// 	return &MULTI_ANEW_ARRAY{}
+	case 0xc5:
+		return &MULTI_ANEW_ARRAY{}
 	case 0xc6:
 		return &IFNULL{}
 	case 0xc7:
