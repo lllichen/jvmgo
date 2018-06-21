@@ -6,12 +6,12 @@ import (
 	"jvmgo/ch08/rtda/heap"
 )
 
-type AASOTRE struct {
+type AASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (aastore *AASOTRE) Execute(frame *rtda.Frame) {
+func (aastore *AASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	ref := stack.PopRef()
 	index := stack.PopInt()
@@ -24,12 +24,12 @@ func (aastore *AASOTRE) Execute(frame *rtda.Frame) {
 }
 
 
-type BASOTRE struct {
+type BASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (bastore *BASOTRE) Execute(frame *rtda.Frame) {
+func (bastore *BASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopInt()
 	index := stack.PopInt()
@@ -42,11 +42,11 @@ func (bastore *BASOTRE) Execute(frame *rtda.Frame) {
 }
 
 
-type CASOTRE struct {
+type CASTORE struct {
 	base.NoOperandsInstruction
 }
 
-func (castore *CASOTRE) Execute(frame *rtda.Frame) {
+func (castore *CASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopInt()
 	index := stack.PopInt()
@@ -59,12 +59,12 @@ func (castore *CASOTRE) Execute(frame *rtda.Frame) {
 }
 
 
-type DASOTRE struct {
+type DASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (dastore *DASOTRE) Execute(frame *rtda.Frame) {
+func (dastore *DASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopDouble()
 	index := stack.PopInt()
@@ -76,12 +76,12 @@ func (dastore *DASOTRE) Execute(frame *rtda.Frame) {
 	doubles[index] = float64(val)
 }
 
-type FASOTRE struct {
+type FASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (fastore *FASOTRE) Execute(frame *rtda.Frame) {
+func (fastore *FASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopFloat()
 	index := stack.PopInt()
@@ -96,12 +96,12 @@ func (fastore *FASOTRE) Execute(frame *rtda.Frame) {
 
 
 
-type IASOTRE struct {
+type IASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (iastore *IASOTRE) Execute(frame *rtda.Frame) {
+func (iastore *IASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopInt()
 	index := stack.PopInt()
@@ -113,12 +113,12 @@ func (iastore *IASOTRE) Execute(frame *rtda.Frame) {
 	ints[index] = int32(val)
 }
 
-type LASOTRE struct {
+type LASTORE struct {
 	base.NoOperandsInstruction
 }
 
 
-func (lastore *LASOTRE) Execute(frame *rtda.Frame) {
+func (lastore *LASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopLong()
 	index := stack.PopInt()
@@ -131,11 +131,11 @@ func (lastore *LASOTRE) Execute(frame *rtda.Frame) {
 }
 
 
-type SASOTRE struct {
+type SASTORE struct {
 	base.NoOperandsInstruction
 }
 
-func (sastore *SASOTRE) Execute(frame *rtda.Frame) {
+func (sastore *SASTORE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	val := stack.PopInt()
 	index := stack.PopInt()
