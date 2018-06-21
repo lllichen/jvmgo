@@ -41,12 +41,12 @@ func (object *Object) Refs() []*Object {
 }
 
 func (object *Object) ArrayLength() int32 {
-
 	switch object.data.(type) {
 	case []int8: return int32(len(object.data.([]int8)))
 	case []int16:return int32(len(object.data.([]int16)))
 	case []int32:return int32(len(object.data.([]int32)))
 	case []int64:return int32(len(object.data.([]int64)))
+	case []uint16:return int32(len(object.data.([]uint16)))
 	case []float32:return int32(len(object.data.([]float32)))
 	case []float64:return int32(len(object.data.([]float64)))
 	case []*Object:return int32(len(object.data.([]*Object)))

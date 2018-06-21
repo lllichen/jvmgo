@@ -3,7 +3,7 @@ package heap
 
 func (class *Class) NewArray(count uint) *Object {
 	if !class.IsArray(){
-		panic("Not array class: ")
+		panic("Not array class: " + class.name)
 	}
 	switch class.Name() {
 	case"[Z" : return &Object{class,make([]int8, count)}
