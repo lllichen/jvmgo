@@ -31,3 +31,9 @@ func (object *Object) SetRefVar(name, descriptor string, ref *Object)  {
 	slots.SetRef(field.slotId, ref)
 }
 
+func (object *Object) GetRefVar(name, descriptor string) *Object{
+	field := object.class.getField(name, descriptor,false)
+
+	slots := object.data.(Slots)
+	return slots.GetRef(field.slotId)
+}
