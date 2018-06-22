@@ -8,9 +8,17 @@ func (class *Class) isAssignableFrom(other *Class) bool {
 
 	if !s.IsArray() {
 		if !s.IsInterface() {
-			return s.IsSubClassOf(t)
+			if !t.IsInterface() {
+				return s.IsSubClassOf(t)
+			} else {
+				return s.IsImplements(t)
+			}
 		} else {
-			return s.IsImplements(t)
+			if !t.IsInterface(){
+				return t.isJlObject()
+			}else {
+				t.IsSuperClassOf(s)
+			}
 		}
 	} else {
 		if !t.IsArray() {
