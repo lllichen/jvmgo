@@ -1,9 +1,9 @@
 package heap
 
 import (
-	"jvmgo/ch08/classpath"
+	"jvmgo/ch09/classpath"
 	"fmt"
-	"jvmgo/ch08/classfile"
+	"jvmgo/ch09/classfile"
 )
 
 type ClassLoader struct {
