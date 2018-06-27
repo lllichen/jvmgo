@@ -71,3 +71,6 @@ func (localVars LocalVars) GetRef(index uint) *heap.Object {
 func (localVars LocalVars) SetSlot(index uint, slot Slot) {
 	localVars[index] = slot
 }
+func (localVars LocalVars) GetThis() *heap.Object {
+	return localVars.GetRef(0)
+}
