@@ -1,9 +1,9 @@
 package heap
 
 import (
-	"jvmgo/ch09/classpath"
+	"jvmgo/ch08/classpath"
 	"fmt"
-	"jvmgo/ch09/classfile"
+	"jvmgo/ch08/classfile"
 )
 
 type ClassLoader struct {
@@ -13,61 +13,21 @@ type ClassLoader struct {
 }
 
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-	loader := &ClassLoader{
+	return &ClassLoader{
 		cp:          cp,
 		verboseFlag: verboseFlag,
 		classMap:    make(map[string]*Class),
 	}
-	loader.loadBasicClasses()
-	loader.loadPrimitiveClass()
-	return loader
-}
-
-func (classLoader *ClassLoader) loadBasicClasses(){
-	jlClassClass := classLoader.LoadClass("java/lang/Class")
-	for _, class := range classLoader.classMap {
-		if class.jClass == nil {
-			class.jClass = jlClassClass.NewObject()
-			class.jClass.extra = class
-		}
-	}
-}
-
-func (classLoader *ClassLoader) loadPrimitiveClasses(){
-	for primitiveType, _ := range primitiveTypes {
-		classLoader.loadPrimitiveClass(primitiveType)
-	}
-}
-
-func (classLoader *ClassLoader) loadPrimitiveClass(className string)  {
-	class := &Class{
-		accessFlags:ACC_PUBLIC,
-		name : className,
-		loader:classLoader,
-		initStarted:true,
-	}
-	class.jClass = classLoader.classMap["java/lang/Class"].NewObject()
-	class.jClass.extra = class
-	classLoader.classMap[className] = class
 }
 
 func (classLoader *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := classLoader.classMap[name]; ok {
 		return class
 	}
-	var class *Class
-
 	if name[0] == '[' {
-		class = classLoader.loadArrayClass(name)
-	}else {
-		class = classLoader.loadNonArrayClass(name)
+		return classLoader.loadArrayClass(name)
 	}
-
-	if jlClassClass, ok := classLoader.classMap["java/lang/Class"];ok {
-		class.jClass = jlClassClass.NewObject()
-		class.jClass.extra = class
-	}
-	return class
+	return classLoader.loadNonArrayClass(name)
 }
 
 func (classLoader *ClassLoader) loadNonArrayClass(name string) *Class {
@@ -213,8 +173,10 @@ func initStaticFinalVar(class *Class, field *Field) {
 		case "D":
 			val := cp.GetConstant(cpIndex).(float64)
 			vars.SetDouble(slotId, val)
-		case "Ljava/lang/String":
-			panic("todo")
+		case "Ljava/lang/String;":
+			goStr := cp.GetConstant(cpIndex).(string)
+			jStr := JString(class.Loader(), goStr)
+			vars.SetRef(slotId,jStr)
 		}
 	}
 }

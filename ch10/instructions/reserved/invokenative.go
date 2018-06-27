@@ -1,9 +1,9 @@
 package reserved
 
 import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/native"
+	"jvmgo/ch10/instructions/base"
+	"jvmgo/ch10/rtda"
+	"jvmgo/ch10/native"
 )
 
 type INVOKE_NATIVE struct {

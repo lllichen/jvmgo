@@ -1,8 +1,8 @@
 package references
 
-import "jvmgo/ch09/instructions/base"
-import "jvmgo/ch09/rtda"
-import "jvmgo/ch09/rtda/heap"
+import "jvmgo/ch08/instructions/base"
+import "jvmgo/ch08/rtda"
+import "jvmgo/ch08/rtda/heap"
 
 // demo!
 type INVOKE_XXX struct{ base.Index16Instruction }

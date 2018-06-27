@@ -2,9 +2,9 @@ package main
 
 import "fmt"
 import (
-	"jvmgo/ch09/classpath"
+	"jvmgo/ch08/classpath"
 	"strings"
-	"jvmgo/ch09/rtda/heap"
+	"jvmgo/ch08/rtda/heap"
 )
 
 func main() {
@@ -27,7 +27,7 @@ func startJVM(cmd *Cmd) {
 	mainClass := classLoader.LoadClass(className)
 	mainMethod := mainClass.GetMainMethod()
 	if mainMethod != nil {
-		interpret(mainMethod,cmd.verboseClassFlag)
+		interpret(mainMethod,cmd.verboseClassFlag,cmd.args)
 	} else {
 		fmt.Printf("Main method not found in class %s\n",cmd.class)
 	}

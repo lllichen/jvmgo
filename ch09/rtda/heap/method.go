@@ -1,6 +1,6 @@
 package heap
 
-import "jvmgo/ch09/classfile"
+import "jvmgo/ch08/classfile"
 
 type Method struct {
 	ClassMember
@@ -14,41 +14,13 @@ type Method struct {
 func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
 	methods := make([]*Method ,len(cfMethods))
 	for i, cfMethod := range cfMethods {
-		methods[i] = newMethod(class, cfMethod)
+		methods[i] = &Method{}
+		methods[i].class = class
+		methods[i].copyMemberInfo(cfMethod)
+		methods[i].copyAttributes(cfMethod)
+		methods[i].calcArgSlotCount()
 	}
 	return methods
-}
-
-func newMethod(class *Class, info *classfile.MemberInfo) *Method {
-	method := &Method{}
-	method.class = class
-	method.copyMemberInfo(info)
-	method.copyAttributes(info)
-	md := parseMethodDescriptor(method.descriptor)
-	method.calcArgSlotCount(md.parameterTypes)
-	if method.IsNative() {
-		method.injectCodeAttribute(md.returnType)
-	}
-	return method
-}
-
-func (method *Method) injectCodeAttribute(returnType string) {
-	method.maxStack = 4
-	method.maxLocals = method.argSlotCount
-	switch returnType[0] {
-	case 'V':
-		method.code = []byte{0xfe, 0xb1} //return
-	case 'D':
-		method.code = []byte{0xfe, 0xaf} //dreturn
-	case 'F':
-		method.code = []byte{0xfe, 0xae} //freturn
-	case 'J':
-		method.code = []byte{0xfe, 0xad} //lreturn
-	case 'L':
-		method.code = []byte{0xfe, 0xb0} //areturn
-	default:
-		method.code = []byte{0xfe, 0xac} //ireturn
-	}
 }
 
 func (method *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
@@ -68,15 +40,16 @@ func (method *Method) Code() []byte {
 	return method.code
 }
 
-func (method *Method) IsNative() bool {
-	return 0 != method.accessFlags&ACC_NATIVE
+func (self *Method) IsNative() bool {
+	return 0 != self.accessFlags&ACC_NATIVE
 }
 
 func (method *Method) ArgSlotCount() uint {
 	return method.argSlotCount
 }
-func (method *Method) calcArgSlotCount(paramTypes []string) {
-	for _, paramType := range paramTypes{
+func (method *Method) calcArgSlotCount() {
+	parsedDescriptor := parseMethodDescriptor(method.descriptor)
+	for _, paramType := range parsedDescriptor.parameterTypes {
 		method.argSlotCount++
 		if paramType == "J" || paramType == "D" {
 			method.argSlotCount++

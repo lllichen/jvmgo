@@ -1,8 +1,8 @@
 package base
 
 import (
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
+	"jvmgo/ch08/rtda"
+	"jvmgo/ch08/rtda/heap"
 	"fmt"
 )
 

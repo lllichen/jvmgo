@@ -1,9 +1,9 @@
 package constants
 
 import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
+	"jvmgo/ch08/instructions/base"
+	"jvmgo/ch08/rtda"
+	"jvmgo/ch08/rtda/heap"
 )
 
 type LDC struct {
@@ -41,19 +41,16 @@ func (ldc2W *LDC2_W) Execute(frame *rtda.Frame){
 
 func _ldc(frame *rtda.Frame,index uint) {
 	stack := frame.OperandStack()
-	cp := frame.Method().Class().ConstantPool()
-	c := cp.GetConstant(index)
+	class := frame.Method().Class()
+	c := class.ConstantPool().GetConstant(index)
 
 	switch c.(type) {
 	case int32:stack.PushInt(c.(int32))
 	case float32:stack.PushFloat(c.(float32))
 	case string:
-
-	case *heap.ClassRef:
-		classRef := c.(*heap.ClassRef)
-		classObj := classRef.ResolvedClass().JClass()
-		stack.PushRef(classObj)
-
+		internedStr := heap.JString(class.Loader(),c.(string))
+		stack.PushRef(internedStr)
+	//case *heap.ClassRef
 	default:
 		panic("todo: ldc!")
 	}

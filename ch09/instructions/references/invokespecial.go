@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda/heap"
+	"jvmgo/ch08/rtda"
+	"jvmgo/ch08/instructions/base"
+	"jvmgo/ch08/rtda/heap"
 )
 //Invoke instance method; special handling for superclass,private,
 //and instance initialization method invocations

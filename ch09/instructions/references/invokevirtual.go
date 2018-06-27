@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
+	"jvmgo/ch08/instructions/base"
+	"jvmgo/ch08/rtda"
+	"jvmgo/ch08/rtda/heap"
 	"fmt"
 )
 
@@ -60,6 +60,10 @@ func _println(stack *rtda.OperandStack, descriptor string) {
 		fmt.Printf("%v\n", stack.PopLong())
 	case "(D)V":
 		fmt.Printf("%v\n", stack.PopDouble())
+	case "(Ljava/lang/String;)V":
+		jstr := stack.PopRef()
+		goStr := heap.GoString(jstr)
+		fmt.Println(goStr)
 	default:
 		panic("println: " + descriptor)
 	}

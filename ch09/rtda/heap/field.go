@@ -1,7 +1,7 @@
 package heap
 
 import (
-	"jvmgo/ch09/classfile"
+	"jvmgo/ch08/classfile"
 )
 
 type Field struct {

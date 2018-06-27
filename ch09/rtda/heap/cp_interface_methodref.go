@@ -1,6 +1,6 @@
 package heap
 
-import "jvmgo/ch09/classfile"
+import "jvmgo/ch08/classfile"
 
 type InterfaceMethodRef struct {
 	MemberRef
