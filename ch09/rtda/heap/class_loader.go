@@ -13,11 +13,43 @@ type ClassLoader struct {
 }
 
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-	return &ClassLoader{
+	loader := &ClassLoader{
 		cp:          cp,
 		verboseFlag: verboseFlag,
 		classMap:    make(map[string]*Class),
 	}
+	loader.loadBasicClasses()
+	loader.loadPrimitiveClass()
+	return loader
+}
+
+
+func (classLoader *ClassLoader) loadBasicClasses(){
+	jlClassClass := classLoader.LoadClass("java/lang/Class")
+	for _, class := range classLoader.classMap {
+		if class.jClass == nil {
+			class.jClass = jlClassClass.NewObject()
+			class.jClass.extra = class
+		}
+	}
+}
+
+func (classLoader *ClassLoader) loadPrimitiveClasses(){
+	for primitiveType, _ := range primitiveTypes {
+		classLoader.loadPrimitiveClass(primitiveType)
+	}
+}
+
+func (classLoader *ClassLoader) loadPrimitiveClass(className string)  {
+	class := &Class{
+		accessFlags:ACC_PUBLIC,
+		name : className,
+		loader:classLoader,
+		initStarted:true,
+	}
+	class.jClass = classLoader.classMap["java/lang/Class"].NewObject()
+	class.jClass.extra = class
+	classLoader.classMap[className] = class
 }
 
 func (classLoader *ClassLoader) LoadClass(name string) *Class {
