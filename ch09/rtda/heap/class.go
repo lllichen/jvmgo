@@ -20,6 +20,12 @@ type Class struct {
 	staticSlotCount uint
 	staticVars Slots
 	initStarted bool
+
+	jClass *Object
+}
+
+func (class *Class) JClass() *Object{
+	return class.jClass
 }
 
 

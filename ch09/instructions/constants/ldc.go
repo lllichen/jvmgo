@@ -3,6 +3,7 @@ package constants
 import (
 	"jvmgo/ch09/instructions/base"
 	"jvmgo/ch09/rtda"
+	"jvmgo/ch09/rtda/heap"
 )
 
 type LDC struct {
@@ -46,8 +47,13 @@ func _ldc(frame *rtda.Frame,index uint) {
 	switch c.(type) {
 	case int32:stack.PushInt(c.(int32))
 	case float32:stack.PushFloat(c.(float32))
-	//case string
-	//case *heap.ClassRef
+	case string:
+
+	case *heap.ClassRef:
+		classRef := c.(*heap.ClassRef)
+		classObj := classRef.ResolvedClass().JClass()
+		stack.PushRef(classObj)
+
 	default:
 		panic("todo: ldc!")
 	}
