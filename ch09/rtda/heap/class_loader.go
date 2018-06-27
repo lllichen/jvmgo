@@ -56,19 +56,28 @@ func (classLoader *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := classLoader.classMap[name]; ok {
 		return class
 	}
+	var class *Class
 	if name[0] == '[' {
-		return classLoader.loadArrayClass(name)
+		class = classLoader.loadArrayClass(name)
+	}else {
+		class = classLoader.loadNonArrayClass(name)
 	}
-	return classLoader.loadNonArrayClass(name)
+	if jlClassClass, ok := classLoader.classMap["java/lang/Class"]; ok{
+		class.jClass = jlClassClass.NewObject()
+		class.jClass.extra = class
+	}
+	return class
 }
 
 func (classLoader *ClassLoader) loadNonArrayClass(name string) *Class {
 	data, entry := classLoader.readClass(name)
 	class := classLoader.defineClass(data)
 	link(class)
+
 	if classLoader.verboseFlag {
 		fmt.Printf("[Loaded %s from %s]\n", name, entry)
 	}
+
 	return class
 }
 
