@@ -19,7 +19,7 @@ func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
 		classMap:    make(map[string]*Class),
 	}
 	loader.loadBasicClasses()
-	loader.loadPrimitiveClass()
+	loader.loadPrimitiveClasses()
 	return loader
 }
 

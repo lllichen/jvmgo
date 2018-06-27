@@ -27,6 +27,9 @@ type Class struct {
 func (class *Class) JClass() *Object{
 	return class.jClass
 }
+func (class *Class) JavaName() string{
+	return strings.Replace(class.name,"/",".",-1)
+}
 
 
 

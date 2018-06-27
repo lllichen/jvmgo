@@ -6,16 +6,16 @@ func (class *Class) NewArray(count uint) *Object {
 		panic("Not array class: " + class.name)
 	}
 	switch class.Name() {
-	case"[Z" : return &Object{class,make([]int8, count)}
-	case "[B": return &Object{class,make([]int8,count)}
-	case "[C": return &Object{class,make([]uint16,count)}
-	case "[S": return &Object{class,make([]int16,count)}
-	case "[I": return &Object{class,make([]int32,count)}
-	case "[J": return &Object{class,make([]int64,count)}
-	case "[F": return &Object{class,make([]float32,count)}
-	case "[D": return &Object{class,make([]float64,count)}
+	case"[Z" : return &Object{class,make([]int8, count), nil}
+	case "[B": return &Object{class,make([]int8,count), nil}
+	case "[C": return &Object{class,make([]uint16,count), nil}
+	case "[S": return &Object{class,make([]int16,count), nil}
+	case "[I": return &Object{class,make([]int32,count), nil}
+	case "[J": return &Object{class,make([]int64,count), nil}
+	case "[F": return &Object{class,make([]float32,count), nil}
+	case "[D": return &Object{class,make([]float64,count), nil}
 	default:
-		return &Object{class,make([]*Object,count)}
+		return &Object{class,make([]*Object,count), nil}
 	}
 }
 
