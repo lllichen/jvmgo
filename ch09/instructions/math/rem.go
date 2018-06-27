@@ -1,8 +1,8 @@
 package math
 
 import (
-	"jvmgo/ch08/instructions/base"
-	"jvmgo/ch08/rtda"
+	"jvmgo/ch09/instructions/base"
+	"jvmgo/ch09/rtda"
 	"math"
 )
 
