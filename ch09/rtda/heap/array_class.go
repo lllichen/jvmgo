@@ -27,8 +27,3 @@ func (class *Class) ComponentClass() *Class {
 	componentClassName := getComponentClassName(class.name)
 	return class.loader.LoadClass(componentClassName)
 }
-
-func (class *Class) IsPrimitive() bool {
-	_, ok := primitiveTypes[class.name]
-	return ok
-}

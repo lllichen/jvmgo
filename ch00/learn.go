@@ -41,6 +41,15 @@ import "fmt"
 //}
 
 func main() {
-	fmt.Println( 1024&2)
+	//fmt.Println( 1024&2)
+
+	var x chan int
+	x = make(chan int)
+	go func() {x<-1
+	x<-2
+	x<-3}()
+	z := <- x
+	fmt.Println(z)
+
 }
 
