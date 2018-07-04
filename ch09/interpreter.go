@@ -67,12 +67,14 @@ func loop(thread *rtda.Thread, logInst bool){
 		reader.Reset(frame.Method().Code(),pc)
 		opcode := reader.ReadUint8()
 		inst := instructions.NewInstruction(opcode)
+		fmt.Printf("inst: %+v \n",inst)
 		inst.FetchOperands(reader)
 		frame.SetNextPC(reader.PC())
 
 		if logInst {
 			logInstruction(frame, inst)
 		}
+
 		//execute
 		inst.Execute(frame)
 		if thread.IsStackEmpty(){
