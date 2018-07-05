@@ -122,6 +122,23 @@ func (class *Class) getStaticMethod(name string, descriptor string) *Method {
 	return nil
 }
 
+
+func (class *Class) getMethod(name, descriptor string, isStatic bool) *Method {
+	for c := class; c != nil; c = c.superClass {
+		for _, method := range c.methods {
+			if method.IsStatic() == isStatic &&
+				method.name == name &&
+				method.descriptor == descriptor {
+
+				return method
+			}
+		}
+	}
+	return nil
+}
+
+
+
 func (class *Class) SuperClass() *Class {
 	return class.superClass
 }
@@ -172,4 +189,18 @@ func (class *Class) getField(name, descriptor string, isStatic bool) *Field {
 func (class *Class) IsPrimitive() bool {
 	_, ok := primitiveTypes[class.name]
 	return ok
+}
+
+
+func (class *Class) GetInstanceMethod(name, descriptor string) *Method {
+	return class.getMethod(name, descriptor, false)
+}
+
+func (class *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
+	field := class.getField(fieldName, fieldDescriptor, true)
+	return class.staticVars.GetRef(field.slotId)
+}
+func (class *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
+	field := class.getField(fieldName, fieldDescriptor, true)
+	class.staticVars.SetRef(field.slotId, ref)
 }
