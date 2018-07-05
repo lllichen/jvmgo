@@ -8,7 +8,7 @@ const jlDouble = "java/lang/Double"
 
 func init() {
 	native.Register(jlDouble, "doubleToRawLongBits", "(D)J", doubleToRawLongBits)
-	//native.Register(jlDouble, "longBitsToDouble", "(J)D", longBitsToDouble)
+	native.Register(jlDouble, "longBitsToDouble", "(J)D", longBitsToDouble)
 }
 
 // public static native long doubleToRawLongBits(double value);

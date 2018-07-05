@@ -8,7 +8,7 @@ import (
 
 func init() {
 	native.Register("java/lang/Float", "floatToRawIntBits","(F)I",floatToRawIntBits)
-	native.Register(jlFloat, "intBitsToFloat", "(I)F", intBitsToFloat)
+	native.Register("java/lang/Float", "intBitsToFloat", "(I)F", intBitsToFloat)
 }
 
 func floatToRawIntBits(frame *rtda.Frame)  {
