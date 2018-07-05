@@ -35,7 +35,7 @@ func (getField *GET_FIELD) Execute(frame *rtda.Frame) {
 		stack.PushLong(slots.GetLong(slotId))
 	case 'D':
 		stack.PushDouble(slots.GetDouble(slotId))
-	case 'L':
+	case 'L', '[':
 		stack.PushRef(slots.GetRef(slotId))
 	}
 }
