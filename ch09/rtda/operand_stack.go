@@ -3,7 +3,6 @@ package rtda
 import (
 	"math"
 	"jvmgo/ch09/rtda/heap"
-	"fmt"
 )
 
 type OperandStack struct {
@@ -78,8 +77,8 @@ func (operandStack *OperandStack) PushRef(val *heap.Object){
 
 func (operandStack *OperandStack) PopRef() *heap.Object{
 	operandStack.size--
-	fmt.Printf("operandStack : %+v \n",operandStack)
-	fmt.Printf("operandStack : %v \n",operandStack.size)
+	//fmt.Printf("operandStack : %+v \n",operandStack)
+	//fmt.Printf("operandStack : %v \n",operandStack.size)
 	ref := operandStack.slots[operandStack.size].ref
 	operandStack.slots[operandStack.size].ref = nil
 	return ref
