@@ -5,7 +5,7 @@ import (
 	"jvmgo/ch09/rtda"
 	"jvmgo/ch09/native"
 )
-import _ "jvmgo/ch09/native/lang"
+import _ "jvmgo/ch09/native/java/lang"
 
 type INVOKE_NATIVE struct {
 	base.NoOperandsInstruction
