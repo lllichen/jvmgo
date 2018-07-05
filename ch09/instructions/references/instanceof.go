@@ -1,29 +1,26 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
-)
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
+import "jvmgo/ch09/rtda/heap"
 
-type INSTANCE_OF struct {
-	base.Index16Instruction
-}
+// Determine if object is of given type
+type INSTANCE_OF struct{ base.Index16Instruction }
 
-func (instanceOf *INSTANCE_OF) Execute(frame *rtda.Frame) {
+func (self *INSTANCE_OF) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	ref := stack.PopRef()
 	if ref == nil {
 		stack.PushInt(0)
 		return
 	}
+
 	cp := frame.Method().Class().ConstantPool()
-	classRef := cp.GetConstant(instanceOf.Index).(*heap.ClassRef)
+	classRef := cp.GetConstant(self.Index).(*heap.ClassRef)
 	class := classRef.ResolvedClass()
 	if ref.IsInstanceOf(class) {
 		stack.PushInt(1)
-	}else {
+	} else {
 		stack.PushInt(0)
 	}
 }
-

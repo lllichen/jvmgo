@@ -1,25 +1,23 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
-	"fmt"
-)
+import "fmt"
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
+import "jvmgo/ch09/rtda/heap"
 
-type INVOKE_VIRTUAL struct {
-	base.Index16Instruction
-}
+// Invoke instance method; dispatch based on class
+type INVOKE_VIRTUAL struct{ base.Index16Instruction }
 
-func (invokeVirtual *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
+func (self *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 	currentClass := frame.Method().Class()
 	cp := currentClass.ConstantPool()
-	methodRef := cp.GetConstant(invokeVirtual.Index).(*heap.MethodRef)
+	methodRef := cp.GetConstant(self.Index).(*heap.MethodRef)
 	resolvedMethod := methodRef.ResolvedMethod()
 	if resolvedMethod.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
-	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount()-1)
+
+	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
 	if ref == nil {
 		// hack!
 		if methodRef.Name() == "println" {
@@ -30,20 +28,25 @@ func (invokeVirtual *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.NullPointerException")
 	}
 
-	if resolvedMethod.IsProtected() && resolvedMethod.Class().IsSuperClassOf(currentClass) &&
-		resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() && ref.Class() != currentClass && !ref.Class().IsSubClassOf(currentClass) {
+	if resolvedMethod.IsProtected() &&
+		resolvedMethod.Class().IsSuperClassOf(currentClass) &&
+		resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() &&
+		ref.Class() != currentClass &&
+		!ref.Class().IsSubClassOf(currentClass) {
+
+		if !(ref.Class().IsArray() && resolvedMethod.Name() == "clone") {
 			panic("java.lang.IllegalAccessError")
+		}
 	}
 
-	methodToBeInvoked := heap.LookupMethodInClass(ref.Class(),methodRef.Name(),methodRef.Descriptor())
-
+	methodToBeInvoked := heap.LookupMethodInClass(ref.Class(),
+		methodRef.Name(), methodRef.Descriptor())
 	if methodToBeInvoked == nil || methodToBeInvoked.IsAbstract() {
 		panic("java.lang.AbstractMethodError")
 	}
 
-	base.InvokeMethod(frame,methodToBeInvoked)
+	base.InvokeMethod(frame, methodToBeInvoked)
 }
-
 
 // hack!
 func _println(stack *rtda.OperandStack, descriptor string) {
@@ -61,8 +64,8 @@ func _println(stack *rtda.OperandStack, descriptor string) {
 	case "(D)V":
 		fmt.Printf("%v\n", stack.PopDouble())
 	case "(Ljava/lang/String;)V":
-		jstr := stack.PopRef()
-		goStr := heap.GoString(jstr)
+		jStr := stack.PopRef()
+		goStr := heap.GoString(jStr)
 		fmt.Println(goStr)
 	default:
 		panic("println: " + descriptor)

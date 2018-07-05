@@ -1,24 +1,26 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
-)
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
+import "jvmgo/ch09/rtda/heap"
 
-type ANEW_ARRAY struct {
-	base.Index16Instruction
-}
+// Create new array of reference
+type ANEW_ARRAY struct{ base.Index16Instruction }
 
-func (anewArray *ANEW_ARRAY) Execute(frame *rtda.Frame) {
+func (self *ANEW_ARRAY) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
-	classRef := cp.GetConstant(anewArray.Index).(*heap.ClassRef)
-
+	classRef := cp.GetConstant(self.Index).(*heap.ClassRef)
 	componentClass := classRef.ResolvedClass()
+
+	// if componentClass.InitializationNotStarted() {
+	// 	thread := frame.Thread()
+	// 	frame.SetNextPC(thread.PC()) // undo anewarray
+	// 	thread.InitClass(componentClass)
+	// 	return
+	// }
 
 	stack := frame.OperandStack()
 	count := stack.PopInt()
-
 	if count < 0 {
 		panic("java.lang.NegativeArraySizeException")
 	}
@@ -27,8 +29,3 @@ func (anewArray *ANEW_ARRAY) Execute(frame *rtda.Frame) {
 	arr := arrClass.NewArray(uint(count))
 	stack.PushRef(arr)
 }
-
-
-
-
-

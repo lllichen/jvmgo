@@ -1,23 +1,19 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
-)
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
+import "jvmgo/ch09/rtda/heap"
 
-type NEW struct {
-	base.Index16Instruction
-}
+// Create new object
+type NEW struct{ base.Index16Instruction }
 
-func (new *NEW) Execute(frame *rtda.Frame) {
-	cp  := frame.Method().Class().ConstantPool()
-	classRef := cp.GetConstant(new.Index).(*heap.ClassRef)
+func (self *NEW) Execute(frame *rtda.Frame) {
+	cp := frame.Method().Class().ConstantPool()
+	classRef := cp.GetConstant(self.Index).(*heap.ClassRef)
 	class := classRef.ResolvedClass()
-
 	if !class.InitStarted() {
 		frame.RevertNextPC()
-		base.InitClass(frame.Thread(),class)
+		base.InitClass(frame.Thread(), class)
 		return
 	}
 
@@ -28,9 +24,3 @@ func (new *NEW) Execute(frame *rtda.Frame) {
 	ref := class.NewObject()
 	frame.OperandStack().PushRef(ref)
 }
-
-
-
-
-
-

@@ -1,22 +1,18 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"fmt"
-)
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
 
-type ARRAY_LENGTH struct {
-	base.NoOperandsInstruction
-}
+// Get length of array
+type ARRAY_LENGTH struct{ base.NoOperandsInstruction }
 
-func (arrayLength *ARRAY_LENGTH) Execute(frame *rtda.Frame) {
+func (self *ARRAY_LENGTH) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
-	fmt.Printf("frame : %+v \n",frame)
 	arrRef := stack.PopRef()
 	if arrRef == nil {
 		panic("java.lang.NullPointerException")
 	}
+
 	arrLen := arrRef.ArrayLength()
 	stack.PushInt(arrLen)
 }

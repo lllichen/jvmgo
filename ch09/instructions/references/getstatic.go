@@ -1,36 +1,34 @@
 package references
 
-import (
-	"jvmgo/ch09/instructions/base"
-	"jvmgo/ch09/rtda"
-	"jvmgo/ch09/rtda/heap"
-)
+import "jvmgo/ch09/instructions/base"
+import "jvmgo/ch09/rtda"
+import "jvmgo/ch09/rtda/heap"
 
-type GET_STATIC struct {
-	base.Index16Instruction
-}
+// Get static field from class
+type GET_STATIC struct{ base.Index16Instruction }
 
-func (getStatic *GET_STATIC) Execute(frame *rtda.Frame) {
+func (self *GET_STATIC) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
-	fielRef := cp.GetConstant(getStatic.Index).(*heap.FieldRef)
-	field := fielRef.ResolvedField()
+	fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef)
+	field := fieldRef.ResolvedField()
 	class := field.Class()
-	if !class.InitStarted(){
+	if !class.InitStarted() {
 		frame.RevertNextPC()
-		base.InitClass(frame.Thread(),class)
+		base.InitClass(frame.Thread(), class)
 		return
 	}
 
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
+
 	descriptor := field.Descriptor()
 	slotId := field.SlotId()
 	slots := class.StaticVars()
 	stack := frame.OperandStack()
 
 	switch descriptor[0] {
-	case 'Z','B','C','S','I':
+	case 'Z', 'B', 'C', 'S', 'I':
 		stack.PushInt(slots.GetInt(slotId))
 	case 'F':
 		stack.PushFloat(slots.GetFloat(slotId))
@@ -38,8 +36,9 @@ func (getStatic *GET_STATIC) Execute(frame *rtda.Frame) {
 		stack.PushLong(slots.GetLong(slotId))
 	case 'D':
 		stack.PushDouble(slots.GetDouble(slotId))
-	case 'L':
+	case 'L', '[':
 		stack.PushRef(slots.GetRef(slotId))
+	default:
+		// todo
 	}
 }
-
