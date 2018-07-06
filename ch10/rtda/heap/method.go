@@ -1,6 +1,8 @@
 package heap
 
-import "jvmgo/ch10/classfile"
+import (
+	"jvmgo/ch10/classfile"
+)
 
 type Method struct {
 	ClassMember
@@ -8,6 +10,7 @@ type Method struct {
 	maxLocals uint
 	code []byte
 	argSlotCount uint
+	exceptionTable ExceptionTable
 }
 
 
@@ -56,8 +59,18 @@ func (method *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		method.maxStack = codeAttr.MaxStack()
 		method.maxLocals = codeAttr.MaxLocals()
 		method.code = codeAttr.Code()
+		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), method.class.constantsPool)
 	}
 }
+
+func (method *Method) FindExceptionHandler(exClass *Class, pc int) int{
+	handler := method.exceptionTable.findExceptionHandler(exClass,pc)
+	if handler != nil {
+		return handler.handlerPc
+	}
+	return -1
+}
+
 func (method *Method) MaxLocals() uint {
 	return method.maxLocals
 }

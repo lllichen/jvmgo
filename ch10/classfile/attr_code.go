@@ -28,6 +28,10 @@ func (ca *CodeAttribute) readInfo(reader *ClassReader){
 func (ca *CodeAttribute) MaxLocals() uint {
 	return uint(ca.maxLocals)
 }
+
+func (ca *CodeAttribute) ExceptionTable() []*ExceptionTableEntry {
+	return ca.exceptionTable
+}
 func (ca *CodeAttribute) MaxStack() uint {
 	return uint(ca.maxStack)
 }
