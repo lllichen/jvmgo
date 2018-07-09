@@ -50,4 +50,4 @@ func (stack *Stack) clear()  {
 	for !stack.isEmpty() {
 		stack.pop()
 	}
-}                                                                                                                                                                                                                                                                                                            -      *
+}
