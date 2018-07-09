@@ -114,4 +114,10 @@ func (operandStack *OperandStack) GetRefFromTop(n uint) *heap.Object {
 }
 
 
+func (operandStack *OperandStack) Clear(){
+	operandStack.size = 0
 
+	for i := range operandStack.slots {
+		operandStack.slots[i].ref = nil
+	}
+}

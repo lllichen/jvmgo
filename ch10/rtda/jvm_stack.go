@@ -45,3 +45,9 @@ func newStack(maxSize uint) *Stack {
 func (stack *Stack) isEmpty() bool {
 	return stack._top == nil
 }
+
+func (stack *Stack) clear()  {
+	for !stack.isEmpty() {
+		stack.pop()
+	}
+}                                                                                                                                                                                                                                                                                                            -      *

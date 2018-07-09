@@ -44,4 +44,7 @@ func (thread *Thread) IsStackEmpty() bool {
 	return thread.stack.isEmpty()
 }
 
+func (thread *Thread) ClearStack()  {
+	thread.stack.clear()
+}
 
