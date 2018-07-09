@@ -11,6 +11,7 @@ type Method struct {
 	code []byte
 	argSlotCount uint
 	exceptionTable ExceptionTable
+	lineNumberTable *classfile.LineNumberTableAttribute
 }
 
 
@@ -59,8 +60,19 @@ func (method *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		method.maxStack = codeAttr.MaxStack()
 		method.maxLocals = codeAttr.MaxLocals()
 		method.code = codeAttr.Code()
+		method.lineNumberTable = codeAttr.LineNumberTableAttribute()
 		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), method.class.constantsPool)
 	}
+}
+
+func (method *Method) GetLineNumber(pc int) int {
+	if method.IsNative() {
+		return -2
+	}
+	if method.lineNumberTable == nil {
+		return -1
+	}
+	return method.lineNumberTable.GetLineNumber(pc)
 }
 
 func (method *Method) FindExceptionHandler(exClass *Class, pc int) int{

@@ -22,6 +22,11 @@ type Class struct {
 	initStarted bool
 
 	jClass *Object
+	sourceFile string
+}
+
+func (class *Class)SourceFile() string  {
+	return class.sourceFile
 }
 
 func (class *Class) JClass() *Object{
@@ -42,7 +47,15 @@ func newClass(file *classfile.ClassFile) *Class {
 	class.constantsPool = newConstantPool(class,file.ConstantPool())
 	class.fields = newFields(class,file.Fields())
 	class.methods = newMethods(class,file.Methods())
+	class.sourceFile = getSourceFile(file)
 	return class
+}
+
+func getSourceFile(file *classfile.ClassFile) string {
+	if sfAttr := file.SourceFileAttribute();sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknow"
 }
 
 func (class *Class) IsPublic() bool{

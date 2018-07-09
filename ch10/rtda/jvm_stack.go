@@ -51,3 +51,13 @@ func (stack *Stack) clear()  {
 		stack.pop()
 	}
 }
+
+
+func (stack *Stack) getFrames() []*Frame{
+	frames := make([]*Frame,0,stack.size)
+
+	for frame := stack._top;frame != nil; frame = frame.lower{
+		frames = append(frames, frame)
+	}
+	return frames
+}

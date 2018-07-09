@@ -48,3 +48,6 @@ func (thread *Thread) ClearStack()  {
 	thread.stack.clear()
 }
 
+func (thread *Thread)GetFrames()[]*Frame  {
+	return thread.stack.getFrames()
+}

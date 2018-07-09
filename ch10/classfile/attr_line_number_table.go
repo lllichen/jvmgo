@@ -18,5 +18,15 @@ func (lta *LineNumberTableAttribute) readInfo (reader *ClassReader) {
 			lineNumber:reader.readUint16(),
 		}
 	}
+}
 
+func (lta *LineNumberTableAttribute) GetLineNumber(pc int) int {
+	for i := len(lta.LineNumberTable) -1 ; i >= 0; i--{
+		entry := lta.LineNumberTable[i]
+
+		if pc >= int(entry.startPc) {
+			return int(entry.lineNumber)
+		}
+	}
+	return -1
 }
