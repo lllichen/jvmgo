@@ -5,6 +5,8 @@ import (
 	"jvmgo/ch11/rtda"
 	"jvmgo/ch11/classpath"
 	"jvmgo/ch11/instructions/base"
+	"strings"
+	"fmt"
 )
 
 type JVM struct {
@@ -34,4 +36,35 @@ func (jvm *JVM) initVM()  {
 
 	base.InitClass(jvm.mainThread,vmClass)
 	interpret(jvm.mainThread, jvm.cmd.verboseClassFlag)
+}
+
+func (jvm *JVM) execMain() {
+	className := strings.Replace(jvm.cmd.class, ".", "/", -1)
+
+	mainClass := jvm.classLoader.LoadClass(className)
+
+	mainMethod := mainClass.GetMainMethod()
+	if mainMethod == nil {
+		fmt.Printf("Main method not found in class %s\n", jvm.cmd.class)
+		return
+	}
+
+	argsArr := jvm.createArgsArray()
+	frame := jvm.mainThread.NewFrame(mainMethod)
+	frame.LocalVars().SetRef(0,argsArr)
+	jvm.mainThread.PushFrame(frame)
+	interpret(jvm.mainThread,jvm.cmd.verboseClassFlag)
+}
+
+func (jvm *JVM) createArgsArray() *heap.Object {
+	stringClass := jvm.classLoader.LoadClass("java/lang/String")
+
+	argsLen := uint(len(jvm.cmd.args))
+	argsArr := stringClass.ArrayClass().NewArray(argsLen)
+
+	jArgs := argsArr.Refs()
+	for i, arg := range jvm.cmd.args {
+		jArgs[i] = heap.JString(jvm.classLoader,arg)
+	}
+	return argsArr
 }
