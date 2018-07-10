@@ -1,5 +1,7 @@
 package heap
 
+import "jvmgo/ch10/classfile"
+
 type ExceptionTable []*ExceptionHandler
 
 type ExceptionHandler struct {
@@ -9,14 +11,14 @@ type ExceptionHandler struct {
 	catchType *ClassRef
 }
 
-func newExceptionTable(entries []*ExceptionTableEntry, cp *ConstantPool) ExceptionTable {
+func newExceptionTable(entries []*classfile.ExceptionTableEntry, cp *ConstantPool) ExceptionTable {
 	table := make([]*ExceptionHandler, len(entries))
 	for i, entry := range entries {
 		table[i] = &ExceptionHandler{
 			startPc:   int(entry.StartPc()),
 			endPc:     int(entry.EndPc()),
 			handlerPc: int(entry.HandlerPc()),
-			catchType: getCatchType(uint(entry.CatchType()), pc),
+			catchType: getCatchType(uint(entry.CatchType()), cp),
 		}
 	}
 	return table

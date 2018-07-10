@@ -7,6 +7,22 @@ type ExceptionTableEntry struct {
 	catchType uint16
 }
 
+func (entry *ExceptionTableEntry) StartPc() uint16 {
+	return entry.startPc
+}
+
+func (entry *ExceptionTableEntry) EndPc() uint16 {
+	return entry.endPc
+}
+
+func (entry *ExceptionTableEntry) HandlerPc() uint16 {
+	return entry.handlerPc
+}
+
+func (entry *ExceptionTableEntry) CatchType() uint16 {
+	return entry.catchType
+}
+
 type CodeAttribute struct {
 	cp ConstantPool
 	maxStack uint16
@@ -38,6 +54,20 @@ func (ca *CodeAttribute) MaxStack() uint {
 func (ca *CodeAttribute) Code() []byte {
 	return ca.code
 }
+
+
+func (ca *CodeAttribute) LineNumberTableAttribute() *LineNumberTableAttribute {
+	for _, attrInfo := range ca.attributes {
+		switch attrInfo.(type) {
+		case *LineNumberTableAttribute:
+			return attrInfo.(*LineNumberTableAttribute)
+		}
+	}
+	return nil
+}
+
+
+
 func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	exceptionTableLength := reader.readUint16()
 	exceptionTable := make([]*ExceptionTableEntry,exceptionTableLength)

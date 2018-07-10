@@ -10,6 +10,11 @@ func (object *Object) Extra() interface{} {
 	return object.extra
 }
 
+
+func (object *Object) SetExtra(extra interface{}) {
+	object.extra = extra
+}
+
 func newObject(class *Class) *Object {
 	return &Object{
 		class:  class,

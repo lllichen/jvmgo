@@ -30,7 +30,7 @@ func findAndGotoExceptionHandler(thread *rtda.Thread, ex *heap.Object) bool {
 		frame := thread.CurrentFrame()
 		pc := frame.NextPC() - 1
 
-		handlerPC := frame.Method().FindExceptionHandler(ex.Class(),ex)
+		handlerPC := frame.Method().FindExceptionHandler(ex.Class(),pc)
 		if handlerPC > 0 {
 			stack := frame.OperandStack()
 			stack.Clear()
