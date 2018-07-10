@@ -4,6 +4,7 @@ import (
 	"jvmgo/ch10/native"
 	"jvmgo/ch10/rtda"
 	"jvmgo/ch10/rtda/heap"
+	"fmt"
 )
 
 type StackTraceElement struct {
@@ -13,6 +14,11 @@ type StackTraceElement struct {
 	lineNumber int
 }
 
+
+func (stackTraceElement *StackTraceElement) String() string {
+	return fmt.Sprintf("%s.%s(%s:%d)",
+		stackTraceElement.className, stackTraceElement.methodName, stackTraceElement.fileName, stackTraceElement.lineNumber)
+}
 
 func init() {
 	native.Register("java/lang/Throwable", "fillInStackTrace","(I)Ljava/lang/Throwable;",fillInStackTrace)
@@ -29,7 +35,7 @@ func fillInStackTrace(frame *rtda.Frame) {
 
 func createStackTraceElements(object *heap.Object, thread *rtda.Thread)[]*StackTraceElement{
 	skip := distanceToObject(object.Class())+2
-	frames := thread.GetFrames()[:skip]
+	frames := thread.GetFrames()[skip:]
 
 	stes := make([]*StackTraceElement,len(frames))
 
