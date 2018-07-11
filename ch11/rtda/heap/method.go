@@ -6,12 +6,16 @@ import (
 
 type Method struct {
 	ClassMember
-	maxStack uint
-	maxLocals uint
-	code []byte
-	argSlotCount uint
-	exceptionTable ExceptionTable
-	lineNumberTable *classfile.LineNumberTableAttribute
+	maxStack                uint
+	maxLocals               uint
+	code                    []byte
+	exceptionTable          ExceptionTable // todo: rename
+	lineNumberTable         *classfile.LineNumberTableAttribute
+	exceptions              *classfile.ExceptionsAttribute // todo: rename
+	parameterAnnotationData []byte                         // RuntimeVisibleParameterAnnotations_attribute
+	annotationDefaultData   []byte                         // AnnotationDefault_attribute
+	parsedDescriptor        *MethodDescriptor
+	argSlotCount            uint
 }
 
 
@@ -61,7 +65,7 @@ func (method *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		method.maxLocals = codeAttr.MaxLocals()
 		method.code = codeAttr.Code()
 		method.lineNumberTable = codeAttr.LineNumberTableAttribute()
-		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), method.class.constantsPool)
+		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), method.class.constantPool)
 	}
 }
 
@@ -93,6 +97,14 @@ func (method *Method) Code() []byte {
 	return method.code
 }
 
+func (method *Method) ParameterAnnotationData() []byte {
+	return method.parameterAnnotationData
+}
+func (method *Method) AnnotationDefaultData() []byte {
+	return method.annotationDefaultData
+}
+
+
 func (method *Method) IsNative() bool {
 	return 0 != method.accessFlags&ACC_NATIVE
 }
@@ -113,3 +125,52 @@ func (method *Method) calcArgSlotCount(paramTypes []string) {
 }
 
 
+
+func (method *Method) isConstructor() bool {
+	return !method.IsStatic() && method.name == "<init>"
+}
+
+
+// reflection
+func (method *Method) ParameterTypes() []*Class {
+	if method.argSlotCount == 0 {
+		return nil
+	}
+
+	paramTypes := method.parsedDescriptor.parameterTypes
+	paramClasses := make([]*Class, len(paramTypes))
+	for i, paramType := range paramTypes {
+		paramClassName := toClassName(paramType)
+		paramClasses[i] = method.class.loader.LoadClass(paramClassName)
+	}
+
+	return paramClasses
+}
+
+func (method *Method) ReturnType() *Class {
+	returnType := method.parsedDescriptor.returnType
+	returnClassName := toClassName(returnType)
+	return method.class.loader.LoadClass(returnClassName)
+}
+
+
+func (method *Method) ExceptionTypes() []*Class {
+	if method.exceptions == nil {
+		return nil
+	}
+
+	exIndexTable := method.exceptions.ExceptionIndexTable()
+	exClasses := make([]*Class, len(exIndexTable))
+	cp := method.class.constantPool
+
+	for i, exIndex := range exIndexTable {
+		classRef := cp.GetConstant(uint(exIndex)).(*ClassRef)
+		exClasses[i] = classRef.ResolvedClass()
+	}
+
+	return exClasses
+}
+
+func (method *Method) isClinit() bool {
+	return method.IsStatic() && method.name == "<clinit>"
+}

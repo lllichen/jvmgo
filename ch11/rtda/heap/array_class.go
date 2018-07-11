@@ -27,3 +27,8 @@ func (class *Class) ComponentClass() *Class {
 	componentClassName := getComponentClassName(class.name)
 	return class.loader.LoadClass(componentClassName)
 }
+
+func NewByteArray(loader *ClassLoader, bytes []int8) *Object {
+	return &Object{loader.LoadClass("[B"), bytes, nil}
+}
+

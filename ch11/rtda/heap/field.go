@@ -48,3 +48,9 @@ func (field *Field) ConstValueIndex() uint {
 	return field.constValueIndex
 }
 
+
+// reflection
+func (field *Field) Type() *Class {
+	className := toClassName(field.descriptor)
+	return field.class.loader.LoadClass(className)
+}

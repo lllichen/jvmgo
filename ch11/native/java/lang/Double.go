@@ -19,8 +19,8 @@ func doubleToRawLongBits(frame *rtda.Frame) {
 	frame.OperandStack().PushLong(int64(bits))
 }
 
-//public static native double longBitsToDouble(long bits);
-//(J)D
+// public static native double longBitsToDouble(long bits);
+// (J)D
 func longBitsToDouble(frame *rtda.Frame) {
 	bits := frame.LocalVars().GetLong(0)
 	value := math.Float64frombits(uint64(bits)) // todo

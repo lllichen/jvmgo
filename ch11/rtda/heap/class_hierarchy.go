@@ -1,6 +1,6 @@
 package heap
 
-func (class *Class) isAssignableFrom(other *Class) bool {
+func (class *Class) IsAssignableFrom(other *Class) bool {
 	s, t := other, class
 	if s == t {
 		return true
@@ -30,7 +30,7 @@ func (class *Class) isAssignableFrom(other *Class) bool {
 		} else {
 			sc := s.ComponentClass()
 			tc := t.ComponentClass()
-			return sc == tc || tc.isAssignableFrom(sc)
+			return sc == tc || tc.IsAssignableFrom(sc)
 		}
 
 	}

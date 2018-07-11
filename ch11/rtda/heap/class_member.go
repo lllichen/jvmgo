@@ -3,10 +3,12 @@ package heap
 import "jvmgo/ch11/classfile"
 
 type ClassMember struct {
-	accessFlags uint16
-	name string
-	descriptor string
-	class *Class
+	accessFlags    uint16
+	name           string
+	descriptor     string
+	signature      string
+	annotationData []byte // RuntimeVisibleAnnotations_attribute
+	class          *Class
 }
 
 func (classMember *ClassMember) copyMemberInfo(info *classfile.MemberInfo) {
@@ -31,7 +33,13 @@ func (classMember *ClassMember) isAccessibleTo(d *Class) bool {
 	return d == c
 }
 
+func (classMember *ClassMember) AccessFlags() uint16 {
+	return classMember.accessFlags
+}
 
+func (classMember *ClassMember) Signature() string {
+	return classMember.signature
+}
 func (classMember *ClassMember) Class() *Class{
 	return classMember.class
 }
@@ -42,6 +50,11 @@ func (classMember *ClassMember) Name() string {
 
 func (classMember *ClassMember) Descriptor() string {
 	return classMember.descriptor
+}
+
+
+func (classMember *ClassMember) AnnotationData() []byte {
+	return classMember.annotationData
 }
 
 func (classMember *ClassMember) IsPublic() bool{

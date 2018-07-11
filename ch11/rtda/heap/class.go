@@ -6,23 +6,22 @@ import (
 )
 
 type Class struct {
-	accessFlags uint16
-	name string
-	superClassName string
-	interfaceNames []string
-	constantsPool *ConstantPool
-	fields []*Field
-	methods []*Method
-	loader *ClassLoader
-	superClass *Class
-	interfaces []*Class
+	accessFlags       uint16
+	name              string // thisClassName
+	superClassName    string
+	interfaceNames    []string
+	constantPool      *ConstantPool
+	fields            []*Field
+	methods           []*Method
+	sourceFile        string
+	loader            *ClassLoader
+	superClass        *Class
+	interfaces        []*Class
 	instanceSlotCount uint
-	staticSlotCount uint
-	staticVars Slots
-	initStarted bool
-
-	jClass *Object
-	sourceFile string
+	staticSlotCount   uint
+	staticVars        Slots
+	initStarted       bool
+	jClass            *Object
 }
 
 func (class *Class)SourceFile() string  {
@@ -44,7 +43,7 @@ func newClass(file *classfile.ClassFile) *Class {
 	class.name = file.ClassName()
 	class.superClassName = file.SuperClassName()
 	class.interfaceNames = file.InterfaceNames()
-	class.constantsPool = newConstantPool(class,file.ConstantPool())
+	class.constantPool = newConstantPool(class,file.ConstantPool())
 	class.fields = newFields(class,file.Fields())
 	class.methods = newMethods(class,file.Methods())
 	class.sourceFile = getSourceFile(file)
@@ -107,7 +106,7 @@ func (class *Class) GetPackageName() string{
 	return ""
 }
 func (class *Class) ConstantPool() *ConstantPool {
-	return class.constantsPool
+	return class.constantPool
 }
 func (class *Class) NewObject() *Object {
 	return newObject(class)
@@ -151,7 +150,15 @@ func (class *Class) getMethod(name, descriptor string, isStatic bool) *Method {
 }
 
 
+// getters
+func (class *Class) AccessFlags() uint16 {
+	return class.accessFlags
+}
 
+
+func (class *Class) Interfaces() []*Class {
+	return class.interfaces
+}
 func (class *Class) SuperClass() *Class {
 	return class.superClass
 }
@@ -199,6 +206,23 @@ func (class *Class) getField(name, descriptor string, isStatic bool) *Field {
 }
 
 
+func (class *Class) GetConstructor(descriptor string) *Method {
+	return class.GetInstanceMethod("<init>", descriptor)
+}
+
+
+func (class *Class) GetConstructors(publicOnly bool) []*Method {
+	constructors := make([]*Method, 0, len(class.methods))
+	for _, method := range class.methods {
+		if method.isConstructor() {
+			if !publicOnly || method.IsPublic() {
+				constructors = append(constructors, method)
+			}
+		}
+	}
+	return constructors
+}
+
 func (class *Class) IsPrimitive() bool {
 	_, ok := primitiveTypes[class.name]
 	return ok
@@ -209,6 +233,11 @@ func (class *Class) GetInstanceMethod(name, descriptor string) *Method {
 	return class.getMethod(name, descriptor, false)
 }
 
+func (class *Class) GetStaticMethod(name, descriptor string) *Method {
+	return class.getMethod(name, descriptor, true)
+}
+
+
 func (class *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
 	field := class.getField(fieldName, fieldDescriptor, true)
 	return class.staticVars.GetRef(field.slotId)
@@ -216,4 +245,30 @@ func (class *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
 func (class *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
 	field := class.getField(fieldName, fieldDescriptor, true)
 	class.staticVars.SetRef(field.slotId, ref)
+}
+
+func (class *Class) GetFields(publicOnly bool) []*Field {
+	if publicOnly {
+		publicFields := make([]*Field, 0, len(class.fields))
+		for _, field := range class.fields {
+			if field.IsPublic() {
+				publicFields = append(publicFields, field)
+			}
+		}
+		return publicFields
+	} else {
+		return class.fields
+	}
+}
+
+func (class *Class) GetMethods(publicOnly bool) []*Method {
+	methods := make([]*Method, 0, len(class.methods))
+	for _, method := range class.methods {
+		if !method.isClinit() && !method.isConstructor() {
+			if !publicOnly || method.IsPublic() {
+				methods = append(methods, method)
+			}
+		}
+	}
+	return methods
 }

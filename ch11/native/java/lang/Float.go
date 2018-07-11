@@ -1,19 +1,21 @@
 package lang
 
-import (
-	"jvmgo/ch11/native"
-	"jvmgo/ch11/rtda"
-	"math"
-)
+import "math"
+import "jvmgo/ch11/native"
+import "jvmgo/ch11/rtda"
+
+const jlFloat = "java/lang/Float"
 
 func init() {
-	native.Register("java/lang/Float", "floatToRawIntBits","(F)I",floatToRawIntBits)
-	native.Register("java/lang/Float", "intBitsToFloat", "(I)F", intBitsToFloat)
+	native.Register(jlFloat, "floatToRawIntBits", "(F)I", floatToRawIntBits)
+	native.Register(jlFloat, "intBitsToFloat", "(I)F", intBitsToFloat)
 }
 
-func floatToRawIntBits(frame *rtda.Frame)  {
+// public static native int floatToRawIntBits(float value);
+// (F)I
+func floatToRawIntBits(frame *rtda.Frame) {
 	value := frame.LocalVars().GetFloat(0)
-	bits := math.Float32bits(value)
+	bits := math.Float32bits(value) // todo
 	frame.OperandStack().PushInt(int32(bits))
 }
 
