@@ -33,6 +33,7 @@ func newMethod(class *Class, info *classfile.MemberInfo) *Method {
 	method.copyMemberInfo(info)
 	method.copyAttributes(info)
 	md := parseMethodDescriptor(method.descriptor)
+	method.parsedDescriptor = md
 	method.calcArgSlotCount(md.parameterTypes)
 	if method.IsNative() {
 		method.injectCodeAttribute(md.returnType)
@@ -41,21 +42,21 @@ func newMethod(class *Class, info *classfile.MemberInfo) *Method {
 }
 
 func (method *Method) injectCodeAttribute(returnType string) {
-	method.maxStack = 4
+	method.maxStack = 4 // todo
 	method.maxLocals = method.argSlotCount
 	switch returnType[0] {
 	case 'V':
-		method.code = []byte{0xfe, 0xb1} //return
+		method.code = []byte{0xfe, 0xb1} // return
+	case 'L', '[':
+		method.code = []byte{0xfe, 0xb0} // areturn
 	case 'D':
-		method.code = []byte{0xfe, 0xaf} //dreturn
+		method.code = []byte{0xfe, 0xaf} // dreturn
 	case 'F':
-		method.code = []byte{0xfe, 0xae} //freturn
+		method.code = []byte{0xfe, 0xae} // freturn
 	case 'J':
-		method.code = []byte{0xfe, 0xad} //lreturn
-	case 'L':
-		method.code = []byte{0xfe, 0xb0} //areturn
+		method.code = []byte{0xfe, 0xad} // lreturn
 	default:
-		method.code = []byte{0xfe, 0xac} //ireturn
+		method.code = []byte{0xfe, 0xac} // ireturn
 	}
 }
 
@@ -65,8 +66,13 @@ func (method *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		method.maxLocals = codeAttr.MaxLocals()
 		method.code = codeAttr.Code()
 		method.lineNumberTable = codeAttr.LineNumberTableAttribute()
-		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), method.class.constantPool)
+		method.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
+			method.class.constantPool)
 	}
+	method.exceptions = cfMethod.ExceptionsAttribute()
+	method.annotationData = cfMethod.RuntimeVisibleAnnotationsAttributeData()
+	method.parameterAnnotationData = cfMethod.RuntimeVisibleParameterAnnotationsAttributeData()
+	method.annotationDefaultData = cfMethod.AnnotationDefaultAttributeData()
 }
 
 func (method *Method) GetLineNumber(pc int) int {
