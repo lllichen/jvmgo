@@ -196,7 +196,7 @@ func allocAndInitStaticVars(class *Class) {
 
 func initStaticFinalVar(class *Class, field *Field) {
 	vars := class.staticVars
-	cp := class.ConstantPool()
+	cp := class.constantPool
 	cpIndex := field.ConstValueIndex()
 	slotId := field.SlotId()
 
