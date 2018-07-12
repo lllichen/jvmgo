@@ -104,10 +104,26 @@ func (method *Method) AnnotationDefaultData() []byte {
 	return method.annotationDefaultData
 }
 
-
+func (method *Method) IsSynchronized() bool {
+	return 0 != method.accessFlags&ACC_SYNCHRONIZED
+}
+func (method *Method) IsBridge() bool {
+	return 0 != method.accessFlags&ACC_BRIDGE
+}
+func (method *Method) IsVarargs() bool {
+	return 0 != method.accessFlags&ACC_VARARGS
+}
 func (method *Method) IsNative() bool {
 	return 0 != method.accessFlags&ACC_NATIVE
 }
+func (method *Method) IsAbstract() bool {
+	return 0 != method.accessFlags&ACC_ABSTRACT
+}
+func (method *Method) IsStrict() bool {
+	return 0 != method.accessFlags&ACC_STRICT
+}
+
+
 
 func (method *Method) ArgSlotCount() uint {
 	return method.argSlotCount
