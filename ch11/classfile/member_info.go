@@ -55,3 +55,36 @@ func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 		attributes:      readAttributes(reader, cp),
 	}
 }
+
+func (mi *MemberInfo) ExceptionsAttribute() *ExceptionsAttribute {
+	for _, attrInfo := range mi.attributes {
+		switch attrInfo.(type) {
+		case *ExceptionsAttribute:
+			return attrInfo.(*ExceptionsAttribute)
+		}
+	}
+	return nil
+}
+
+func (mi *MemberInfo) RuntimeVisibleAnnotationsAttributeData() []byte {
+	return mi.getUnparsedAttributeData("RuntimeVisibleAnnotations")
+}
+func (mi *MemberInfo) RuntimeVisibleParameterAnnotationsAttributeData() []byte {
+	return mi.getUnparsedAttributeData("RuntimeVisibleParameterAnnotationsAttribute")
+}
+func (mi *MemberInfo) AnnotationDefaultAttributeData() []byte {
+	return mi.getUnparsedAttributeData("AnnotationDefault")
+}
+
+func (mi *MemberInfo) getUnparsedAttributeData(name string) []byte {
+	for _, attrInfo := range mi.attributes {
+		switch attrInfo.(type) {
+		case *UnparsedAttribute:
+			unparsedAttr := attrInfo.(*UnparsedAttribute)
+			if unparsedAttr.name == name {
+				return unparsedAttr.info
+			}
+		}
+	}
+	return nil
+}
