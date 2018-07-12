@@ -79,10 +79,10 @@ func (mi *MemberInfo) AnnotationDefaultAttributeData() []byte {
 func (mi *MemberInfo) getUnparsedAttributeData(name string) []byte {
 	for _, attrInfo := range mi.attributes {
 		switch attrInfo.(type) {
-		case *UnparsedAttribute:
-			unparsedAttr := attrInfo.(*UnparsedAttribute)
-			if unparsedAttr.name == name {
-				return unparsedAttr.info
+		case *UnParsedAttribute:
+			unParsedAttr := attrInfo.(*UnParsedAttribute)
+			if unParsedAttr.name == name {
+				return unParsedAttr.info
 			}
 		}
 	}
