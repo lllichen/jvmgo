@@ -10,7 +10,7 @@ type OperandStack struct {
 	slots []Slot
 }
 
-func NewOperandStack(maxStack uint) *OperandStack {
+func newOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {
 		return &OperandStack{
 			slots:make([]Slot,maxStack ),
@@ -120,4 +120,10 @@ func (operandStack *OperandStack) Clear(){
 	for i := range operandStack.slots {
 		operandStack.slots[i].ref = nil
 	}
+}
+
+
+// todo
+func NewOperandStack(maxStack uint) *OperandStack {
+	return newOperandStack(maxStack)
 }
